@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <scoreoptions translate="title" module="score">
+                                        <title>Konduto Cnfig</title>
+                                    </scoreoptions>
+                                    <scoreinfo translate="title" module="score">
+                                        <title>Konduto Info</title>
+                                    </scoreinfo>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <default>
+        <scoreoptions>
+            <messages>
+                <reviewupscore>
+                    0.66
+                </reviewupscore>
+                <reviewloscore>
+                    0.33
+                </reviewloscore>
+            </messages>
+        </scoreoptions>
+    </default>
+</config>

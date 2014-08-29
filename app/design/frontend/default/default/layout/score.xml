@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="footer">
+            <block type="core/template" name="scorejs" template="score/score.phtml" before="-"/>
+        </reference>
+    </default>
+    
+    
+    <catalog_product_view>
+        <reference name="head">
+            <block type="core/text" name="product_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="product"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </catalog_product_view>
+    
+    <catalogsearch_result_index>
+        <reference name="head">
+            <block type="core/text" name="search_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="search"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </catalogsearch_result_index>
+    
+    <catalogsearch_advanced_result>
+        <reference name="head">
+            <block type="core/text" name="search_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="search"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </catalogsearch_advanced_result>
+    
+    <customer_account_forgotpassword>
+        <reference name="head">
+            <block type="core/text" name="password_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="password_reset"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </customer_account_forgotpassword>
+    
+    <customer_account_create>
+        <reference name="head">
+            <block type="core/text" name="acccreate_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="account_creation"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </customer_account_create>
+    
+    <checkout_onepage_index>
+        <reference name="head">
+            <block type="core/text" name="checkout_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="checkout"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </checkout_onepage_index>
+    
+    <checkout_cart_index>
+        <reference name="head">
+            <block type="core/text" name="cart_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="cart"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+        <reference name="footer">
+            <block type="core/template" name="scoreIdjs" template="score/getId.phtml" after="-"/>
+        </reference>
+    </checkout_cart_index>
+    
+    <customer_account_index>
+        <reference name="head">
+            <block type="core/text" name="acc_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="account"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </customer_account_index>
+    
+    <catalog_category_default>
+        <reference name="head">
+            <block type="core/text" name="category_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name"kdt:page" content="category"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </catalog_category_default>
+</layout> 

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Konduto_Score>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Konduto_Score>
+    </modules>
+</config> 
