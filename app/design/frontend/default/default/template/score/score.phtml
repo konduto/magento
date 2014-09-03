@@ -1,21 +1,17 @@
 <?php
 $mode = Mage::getStoreConfig('scoreoptions/messages/mode');
-if ($mode == 1) {
-    $public = Mage::getStoreConfig('scoreoptions/messages/productionpublickey');
-} else {
-    $public = Mage::getStoreConfig('scoreoptions/messages/sandboxpublickey');
-}
+if ($mode == 1) { $public = Mage::getStoreConfig('scoreoptions/messages/productionpublickey'); }
+else { $public = Mage::getStoreConfig('scoreoptions/messages/sandboxpublickey'); }
 ?>
+
 <script type="text/javascript">
-var __kdt = __kdt || [];
-__kdt.push({"public_key": "<?php echo $public ?>"});
-(function() {
-    var kdt = document.createElement('script');
-    kdt.id = 'kdtjs';
-    kdt.type = 'text/javascript';
-    kdt.async = true;
-    kdt.src = 'https://d46w1m9rlmw15.cloudfront.net/k.js';
-    var s = document.getElementsByTagName('body')[0];
-    s.parentNode.insertBefore(kdt, s);
-})();
+  var __kdt = __kdt || [];
+  __kdt.push({"public_key": "<?php echo $public ?>"});
+  (function() {
+      var kdt = document.createElement("script");
+      kdt.id = "kdtjs"; kdt.type = "text/javascript"; kdt.async = true;
+      kdt.src = "https://d46w1m9rlmw15.cloudfront.net/k.js";
+      var s = document.getElementsByTagName("body")[0];
+      s.parentNode.insertBefore(kdt, s);
+  })();
 </script>

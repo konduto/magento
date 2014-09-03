@@ -18,12 +18,12 @@ class Konduto_Score_Adminhtml_ScoreController extends Mage_Adminhtml_Controller_
             $order = Mage::getModel('sales/order')->load($orderId);
             try {
                 $setScore = Mage::helper('score/order')->getOrderData($order, $visitor);
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('score')->__('Konduto score Updated'));
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('score')->__('Konduto score updated'));
             } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('score')->__('Konduto score can not be updated'));
+                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('score')->__('Konduto score cannot be updated'));
             }
         } else {
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('score')->__('Konduto visitor Id can not be found'));
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('score')->__('Konduto visitor ID missing'));
         }
         $this->_redirectReferer();
         return;

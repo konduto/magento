@@ -57,6 +57,15 @@
                 </score>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <Konduto_Score>
+                    <files>
+                        <default>Konduto_Score.csv</default>
+                    </files>
+                </Konduto_Score>
+            </modules>
+        </translate>
     </adminhtml>   
     <global>
         <models>

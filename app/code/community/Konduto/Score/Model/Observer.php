@@ -101,10 +101,10 @@ class Konduto_Score_Model_Observer {
             } catch (Exception $ex) {
                 $resp = 'curlError = ' . curl_error($curl);
             }
-/*            if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
+            if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
                 Mage::log('Order Update Request==>' . $data, NULL, 'konduto.log');
                 Mage::log('Order Update Response==>' . $resp, null, 'konduto.log');
-            }*/
+            }
         }
     }
 

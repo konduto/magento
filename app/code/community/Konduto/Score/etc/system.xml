@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <config>
     <tabs>
-        <scoreconfig translate="label" module="score">
+        <scoreconfig module="score">
             <label>Konduto</label>
             <sort_order>9</sort_order>
         </scoreconfig>
     </tabs> 
     <sections>
         <scoreoptions translate="label" module="score">
-            <label>Configuration</label>
+            <label>Fraud Settings</label>
             <tab>scoreconfig</tab>
             <frontend_type>text</frontend_type>
             <sort_order>8000</sort_order>
@@ -16,8 +16,8 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <messages translate="label">
-                    <label>Konduto Fraud Detection Settings</label>
+                <messages translate="label comment">
+                    <label>Konduto - Fraud Detection Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
@@ -37,7 +37,7 @@
                         </activate>
                         <mode>
                             <label>Mode</label>
-                            <comment>Switch between sandbox and production mode</comment>
+                            <comment>Switch between Sandbox and Production modes</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>score/system_select</source_model>
                             <sort_order>2</sort_order>
@@ -47,7 +47,7 @@
                         </mode>
                         <sandboxpublickey>
                             <label>Sandbox Public Key</label>
-                            <comment>Enter sandbox public key. You get this after creating an account with Konduto</comment>
+                            <comment>Enter Sandbox public key. You get this after creating an account with Konduto</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
@@ -59,7 +59,7 @@
                         </sandboxpublickey>
                         <sandboxprikey>
                             <label>Sandbox Private Key</label>
-                            <comment>Enter sandbox private key. You get this after creating an account with Konduto</comment>
+                            <comment>Enter Sandbox private key. You get this after creating an account with Konduto</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
@@ -71,7 +71,7 @@
                         </sandboxprikey>
                         <productionpublickey>
                             <label>Production Public Key</label>
-                            <comment>Enter production public key. You get this after creating an account with Konduto</comment>
+                            <comment>Enter Production public key. You get this after creating an account with Konduto</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
@@ -95,7 +95,7 @@
                         </productionprikey>
                         
                         <reviewaction>
-                            <label>Behaviour</label>
+                            <label>Analysis Mode</label>
                             <comment><![CDATA[Automatic:- Analyse every order. RECOMMENDED.<br> Manual:- Orders will be analysed manually from order datail page.]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>score/system_review</source_model>
@@ -105,8 +105,8 @@
                             <show_in_store>1</show_in_store>  
                         </reviewaction>
                         <reviewupscore>
-                            <label>Decline invoice prompt</label>
-                            <comment>If score is higher than this, prompt me for approval.</comment>
+                            <label>Decline recommendation prompt</label>
+                            <comment>If score is higher than this, prompt me for approval during invoicing.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>8</sort_order>
                             <show_in_default>1</show_in_default>
@@ -136,7 +136,7 @@
                 </messages>
             </groups>
         </scoreoptions>
-        <scoreinfo translate="label" module="score">
+        <scoreinfo translate="label comment" module="score">
             <label>About Us</label>
             <tab>scoreconfig</tab>
             <sort_order>8001</sort_order>
@@ -144,12 +144,9 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <extensions translate="label">
+                <extensions translate="label comment">
                     <label>About Konduto</label>
-                    <comment><![CDATA[<p><b>Konduto - Spot fraud with Buying Behavior</b></p><p>Konduto is a fraud detection 
-service that helps e-commerce merchants spot fraud with Buying Behavior. We use browsing patterns to recognize fraudulent behavior on your 
-website, so we can detect fraud even before the user submits the order.</p><br><p>For more information visit <a 
-href="https://www.konduto.com">www.konduto.com</a>.]]></comment>
+                    <comment><![CDATA[<p><b>Konduto - Spot fraud with Buying Behavior</b></p><p>Konduto is a fraud detection service that helps e-commerce merchants spot fraud with Buying Behavior. We use browsing patterns to recognize fraudulent behavior on your website, so we can detect fraud even before the user submits the order.</p><br><p>For more information visit <a href='https://www.konduto.com'>www.konduto.com</a>.]]></comment>
                     <sort_order>101</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
