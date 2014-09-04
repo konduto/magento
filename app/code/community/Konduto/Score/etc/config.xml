@@ -123,7 +123,7 @@
             </score>
         </helpers>
         <events>
-            <sales_order_place_after>
+            <sales_order_place_before>
                 <observers>
                     <get_konduto_score>
                         <type>singleton</type>
@@ -131,7 +131,7 @@
                         <method>getScore</method>
                     </get_konduto_score>
                 </observers>
-            </sales_order_place_after>
+            </sales_order_place_before>
             <core_block_abstract_to_html_before>
                 <observers>
                     <konduto_invoice>
@@ -146,7 +146,7 @@
                     </konduto_order_page>
                 </observers>
             </core_block_abstract_to_html_before>
-            <sales_order_invoice_register>
+            <!-- <sales_order_invoice_register>
                 <observers>
                     <invoice_save>
                         <type>singleton</type>
@@ -154,14 +154,14 @@
                         <method>updateOrder</method>
                     </invoice_save>            
                 </observers>
-            </sales_order_invoice_register>
+            </sales_order_invoice_register> -->
         </events>
     </global>
     <default>
         <scoreoptions>
             <messages>
-                <reviewupscore>0.66</reviewupscore>
-                <reviewloscore>0.33</reviewloscore>
+                <reviewupscore>0.15</reviewupscore>
+                <reviewloscore>0.06</reviewloscore>
             </messages>
         </scoreoptions>
     </default>

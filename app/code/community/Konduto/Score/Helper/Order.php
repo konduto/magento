@@ -111,10 +111,10 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
             $resp = 'curlError = ' . curl_error($curl);
         }
         $save = $this->saveData($data, $resp, $id);
-/*        if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
+        if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
             Mage::log('request==>' . $data, NULL, 'konduto.log');
             Mage::log('response==>' . $resp, null, 'konduto.log');
-        }*/
+        }
         return $resp;
     }
 
