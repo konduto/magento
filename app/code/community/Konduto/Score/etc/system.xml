@@ -47,7 +47,7 @@
                         </mode>
                         <sandboxpublickey>
                             <label>Sandbox Public Key</label>
-                            <comment>Enter Sandbox public key. You get this after creating an account with Konduto</comment>
+                            <comment>TXXXXXXXXXX (11 characters)</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
@@ -59,7 +59,7 @@
                         </sandboxpublickey>
                         <sandboxprikey>
                             <label>Sandbox Private Key</label>
-                            <comment>Enter Sandbox private key. You get this after creating an account with Konduto</comment>
+                            <comment>TXXXXXXXXXXXXXXXXXXXX (21 characters)</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
@@ -71,7 +71,7 @@
                         </sandboxprikey>
                         <productionpublickey>
                             <label>Production Public Key</label>
-                            <comment>Enter Production public key. You get this after creating an account with Konduto</comment>
+                            <comment>PXXXXXXXXXX (11 characters)</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
@@ -83,7 +83,7 @@
                         </productionpublickey>
                         <productionprikey>
                             <label>Production Private Key</label>
-                            <comment>Enter Production Private key. You get this after creating an account with Konduto</comment>
+                            <comment>PXXXXXXXXXXXXXXXXXXXX (21 characters)</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
@@ -96,7 +96,6 @@
                         
                         <reviewaction>
                             <label>Analysis Mode</label>
-                            <comment><![CDATA[Automatic:- Analyse every order. RECOMMENDED.<br> Manual:- Orders will be analysed manually from order datail page.]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>score/system_review</source_model>
                             <sort_order>7</sort_order>
@@ -114,7 +113,7 @@
                             <show_in_store>1</show_in_store>  
                         </reviewupscore>
                         <reviewloscore>
-                            <label>Approve invoice prompt</label>
+                            <label>Approve recommendation prompt</label>
                             <comment>If the score is lower than this, do not prompt me for approval.</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>9</sort_order>

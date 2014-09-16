@@ -10,7 +10,8 @@
 "Recommendation", "Recomendação"
 "Konduto Analyze", "Analisar pela Konduto"
 "Sandbox", "Teste"
-"Production", "Produção"
+"Production", "Produção",
+"Analysis Mode", "Modo de Análise"
 "Fraud Settings", "Configurações de Fraude"
 "Konduto score updated", "Configurações da Konduto atualizadas"
 "Konduto score cannot be updated", "Houve um erro ao atualizar as configurações"
@@ -43,3 +44,7 @@
 "Automatic:- Analyse every order. RECOMMENDED.<br> Manual:- Orders will be analysed manually from order datail page.", "Automática: Analisa todos os pedidos. RECOMENDADO.<br> Manual: Pedidos serão analisados manualmente através da tela de detalhe de pedidos."
 "konduto.log file is created in var/log where you can see details of of request and response.<br> You also need to enable logging from Advance-> Developer-> Log Settings", "O arquivo konduto.log é criado em var/log e lá você poderá ver os detalhes das requisições e respostas.<br> Você também precisa habilitar o log do Magento em Advance-> Developer-> Log Settings"
 "<p><b>Konduto - Spot fraud with Buying Behavior</b></p><p>Konduto is a fraud detection service that helps e-commerce merchants spot fraud with Buying Behavior. We use browsing patterns to recognize fraudulent behavior on your website, so we can detect fraud even before the user submits the order.</p><br><p>For more information visit <a href='https://www.konduto.com'>www.konduto.com</a>.", "<p><b>Konduto - Detecte fraudes com Comportamento de Compra</b></p><p>A Konduto é um serviço antifraude que utiliza o comportamento de compra para detectar as fraudes. Usamos padrões de navegação para reconhecer comportamentos fraudulentos em seu site.</p><br><p>Para mais informações visite <a href='https://www.konduto.com'>www.konduto.com</a>."
+"TXXXXXXXXXXXXXXXXXXXX (21 characters)","TXXXXXXXXXXXXXXXXXXXX (21 caracteres)"
+"PXXXXXXXXXXXXXXXXXXXX (21 characters)","PXXXXXXXXXXXXXXXXXXXX (21 caracteres)"
+"TXXXXXXXXXX (11 characters)","TXXXXXXXXXX (11 caracteres)"
+"PXXXXXXXXXX (11 characters)","PXXXXXXXXXX (11 caracteres)"
