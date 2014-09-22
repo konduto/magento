@@ -1,17 +1,19 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
+
     <score_adminhtml_score_index>
         <reference name="content">
             <block type="score/adminhtml_score" name="score" />
         </reference>
     </score_adminhtml_score_index>
 
-
     <adminhtml_sales_order_view>
         <reference name="order_info">
             <action method="setTemplate">
                 <template>score/sales/order/view/info.phtml</template>
             </action> 
+            <block type="score/sales_order_view_score" name="score_sales_order_view_score" template="score/sales/order/view/score.phtml"/>
         </reference>
     </adminhtml_sales_order_view>
+
 </layout>

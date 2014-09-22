@@ -111,11 +111,6 @@
                     <sales_order_grid>Konduto_Score_Block_Adminhtml_Order_Grid</sales_order_grid>
                 </rewrite>
             </adminhtml>
-            <catalog>
-                <rewrite>
-                    <product_view>Konduto_Score_Block_Product_View</product_view>
-                </rewrite>
-            </catalog>
         </blocks>
         <helpers>
             <score>
@@ -123,6 +118,15 @@
             </score>
         </helpers>
         <events>
+            <controller_action_layout_load_before>
+                <observers>
+                    <tag_konduto>
+                        <type>singleton</type>
+                        <class>Konduto_Score_Model_Observer</class>
+                        <method>setTag</method>
+                    </tag_konduto>
+                </observers>
+            </controller_action_layout_load_before>
             <sales_order_place_before>
                 <observers>
                     <get_konduto_score>

@@ -1,6 +1,28 @@
 <?php
 class Konduto_Score_Model_Observer {
 
+    private static $tags = array(
+        'catalogsearch_result_index',
+        'catalogsearch_advanced_result',
+        'customer_account_forgotpassword',
+        'customer_account_create',
+        'checkout_onepage_index',
+        'checkout_cart_index',
+        'customer_account_index',
+        'catalog_category_default',
+        'catalog_product_view',
+        'cms_index_index',
+        'catalog_category_view'
+    );
+
+    public function setTag(Varien_Event_Observer $evt) {
+        $handles = $evt->getLayout()->getUpdate()->getHandles();
+        $tags = array_intersect($handles, self::$tags);
+        $tag = array_pop($tags);
+        $evt->getEvent()->getLayout()->getUpdate()->addHandle('konduto_js');
+        $evt->getEvent()->getLayout()->getUpdate()->addHandle('konduto_'.$tag);
+    }
+
     public function getScore(Varien_Event_Observer $evt) {
         $helper = Mage::helper('score/order');
         $order = $evt->getEvent()->getOrder();

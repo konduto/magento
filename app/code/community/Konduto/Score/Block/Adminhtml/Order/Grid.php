@@ -20,14 +20,10 @@ class Konduto_Score_Block_Adminhtml_Order_Grid extends Mage_Adminhtml_Block_Sale
 
     protected function _prepareColumns() {
         if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
-            $this->addColumnAfter('score', array(
-                'header' => Mage::helper('sales')->__('Score'),
-                'index' => 'score',
-                    ), 'status');
             $this->addColumnAfter('recommendation', array(
                 'header' => Mage::helper('sales')->__('Recommendation'),
                 'index' => 'recommendation',
-                    ), 'score');
+                    ), 'status');
             return parent::_prepareColumns();
         } else {
             return parent::_prepareColumns();

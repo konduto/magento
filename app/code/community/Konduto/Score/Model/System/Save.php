@@ -8,7 +8,7 @@ class Konduto_Score_Model_System_Save extends Mage_Core_Model_Config_Data {
         if ($fields['activate']['value'] == 1) {
             if ($fields['mode']['value'] == 1) {
                 $productionpublickey = $fields['productionpublickey']['value'];
-                $productionprikey = $fields['productionprikey']['value'];
+                $productionprikey = $fields['productionprikey']['value']; 
                 if ($productionpublickey == NULL || $productionpublickey == ' ' || !(isset($productionpublickey))) {
                     Mage::throwException(Mage::helper('core')->__('Production Public key is required'));
                     die;

@@ -1,0 +1,18 @@
+<?php if (Mage::getStoreConfig("scoreoptions/messages/activate")): ?>
+    <div class="box-left">
+        <!--score data-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head"><?php echo Mage::helper('sales')->__('Konduto Analysis') ?></h4>
+            </div>
+            <fieldset>
+                <?php
+                $this->getScore();
+                echo '<b>'.Mage::helper('sales')->__('Score').':</b> ' . $this->score . "<br>";
+                echo '<b>'.Mage::helper('sales')->__('Recommendation').':</b> ' . Mage::helper('sales')->__($this->recomend);
+                ?>
+            </fieldset>
+        </div>
+    </div>
+    <div class="clear"></div>
+<?php endif; ?>
