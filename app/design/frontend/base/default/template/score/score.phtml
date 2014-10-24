@@ -1,17 +1,26 @@
 <?php
-$mode = Mage::getStoreConfig('scoreoptions/messages/mode');
-if ($mode == 1) { $public = Mage::getStoreConfig('scoreoptions/messages/productionpublickey'); }
-else { $public = Mage::getStoreConfig('scoreoptions/messages/sandboxpublickey'); }
+$public = '';
+if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
+  $mode = Mage::getStoreConfig('scoreoptions/messages/mode');
+  if ($mode == 1) { $public = Mage::getStoreConfig('scoreoptions/messages/productionpublickey'); }
+  else { $public = Mage::getStoreConfig('scoreoptions/messages/sandboxpublickey'); }
+  if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+    $customerData = Mage::getSingleton('customer/session')->getCustomer();
+    $customerId = $customerData->getId();
+  }
+}
 ?>
-
 <script type="text/javascript">
   var __kdt = __kdt || [];
-  __kdt.push({"public_key": "<?php echo $public ?>"});
+  __kdt.push({"public_key":"<?php echo $public ?>"});
+  <?php if (isset($customerId)): ?>
+  __kdt.push({"customer_id":"<?php echo $customerId ?>"});
+  <?php endif; ?>
   (function() {
-      var kdt = document.createElement("script");
-      kdt.id = "kdtjs"; kdt.type = "text/javascript"; kdt.async = true;
-      kdt.src = "https://d46w1m9rlmw15.cloudfront.net/k.js";
-      var s = document.getElementsByTagName("body")[0];
-      s.parentNode.insertBefore(kdt, s);
+    var kdt = document.createElement("script");
+    kdt.id = "kdtjs"; kdt.type = "text/javascript"; kdt.async = true;
+    kdt.src = "https://d46w1m9rlmw15.cloudfront.net/k.js";
+    var s = document.getElementsByTagName("body")[0];
+    s.parentNode.insertBefore(kdt, s);
   })();
 </script>

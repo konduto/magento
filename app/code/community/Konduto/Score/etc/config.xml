@@ -109,6 +109,7 @@
             <adminhtml>
                 <rewrite>
                     <sales_order_grid>Konduto_Score_Block_Adminhtml_Order_Grid</sales_order_grid>
+                    <sales_order_view_info>Konduto_Score_Block_Sales_Order_View_Score</sales_order_view_info>
                 </rewrite>
             </adminhtml>
         </blocks>
@@ -127,16 +128,34 @@
                     </tag_konduto>
                 </observers>
             </controller_action_layout_load_before>
-            <sales_order_place_before>
+            <sales_model_service_quote_submit_before>
                 <observers>
                     <get_konduto_score>
                         <type>singleton</type>
                         <class>Konduto_Score_Model_Observer</class>
-                        <method>getScore</method>
+                        <method>prepareScore</method>
                     </get_konduto_score>
                 </observers>
-            </sales_order_place_before>
-            <core_block_abstract_to_html_before>
+            </sales_model_service_quote_submit_before>
+            <sales_model_service_quote_submit_success>
+                <observers>
+                    <get_konduto_score>
+                        <type>singleton</type>
+                        <class>Konduto_Score_Model_Observer</class>
+                        <method>setScorePayment</method>
+                    </get_konduto_score>
+                </observers>
+            </sales_model_service_quote_submit_success>
+            <controller_action_postdispatch_checkout>
+                <observers>
+                    <get_konduto_score>
+                        <type>singleton</type>
+                        <class>Konduto_Score_Model_Observer</class>
+                        <method>sendScoreRequest</method>
+                    </get_konduto_score>
+                </observers>
+            </controller_action_postdispatch_checkout>
+            <!-- <core_block_abstract_to_html_before>
                 <observers>
                     <konduto_invoice>
                         <type>singleton</type>
@@ -150,7 +169,7 @@
                     </konduto_order_page>
                 </observers>
             </core_block_abstract_to_html_before>
-            <!-- <sales_order_invoice_register>
+             <sales_order_invoice_register>
                 <observers>
                     <invoice_save>
                         <type>singleton</type>

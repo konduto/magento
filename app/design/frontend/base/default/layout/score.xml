@@ -3,6 +3,7 @@
 
     <konduto_js>
         <reference name="footer">
+        	<action method="setCacheLifetime"><s>0</s></action>
             <block type="core/template" name="scorejs" template="score/score.phtml" before="-"/>
         </reference>
     </konduto_js>
@@ -101,9 +102,6 @@
                     </text>
                 </action>
             </block>
-        </reference>
-        <reference name="footer">
-            <block type="core/template" name="scoreIdjs" template="score/getId.phtml" after="-"/>
         </reference>
     </konduto_checkout_cart_index>
     

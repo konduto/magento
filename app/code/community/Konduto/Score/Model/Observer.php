@@ -23,14 +23,32 @@ class Konduto_Score_Model_Observer {
         $evt->getEvent()->getLayout()->getUpdate()->addHandle('konduto_'.$tag);
     }
 
-    public function getScore(Varien_Event_Observer $evt) {
+    public function setScorePayment(Varien_Event_Observer $evt) {
         $helper = Mage::helper('score/order');
         $order = $evt->getEvent()->getOrder();
-        if (Mage::getStoreConfig("scoreoptions/messages/activate") && Mage::getStoreConfig("scoreoptions/messages/reviewaction") == 3) {
+        if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
+            $response = $helper->setOrderPayment($order);
+        }
+        return;
+    }
+    
+    public function sendScoreRequest(Varien_Event_Observer $evt) {
+        if (Mage::getSingleton('core/session')->getScorePrepared()) {
+          $helper = Mage::helper('score/order');
+          if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
+            $response = $helper->fireRequest();
+          }
+          Mage::getSingleton('core/session')->unsScorePrepared();
+          return;
+        }
+    }
+    
+    public function prepareScore(Varien_Event_Observer $evt) {
+        $helper = Mage::helper('score/order');
+        $order = $evt->getEvent()->getOrder();
+        Mage::getSingleton('core/session')->setScorePrepared(true);
+        if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
             $response = $helper->getOrderData($order);
-        } elseif ((Mage::getStoreConfig("scoreoptions/messages/activate") && Mage::getStoreConfig("scoreoptions/messages/reviewaction") == 2)) {
-            $od = $order->getId();
-            $helper->saveData(NULL, NULL, $od);
         }
         return;
     }

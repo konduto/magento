@@ -17,7 +17,7 @@ class Konduto_Score_Adminhtml_ScoreController extends Mage_Adminhtml_Controller_
             $visitor = $model->getFirstItem()->getVisitorId();
             $order = Mage::getModel('sales/order')->load($orderId);
             try {
-                $setScore = Mage::helper('score/order')->getOrderData($order, $visitor);
+                $setScore = Mage::helper('score/order')->getOrderData($order, "approved", $visitor);
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('score')->__('Konduto score updated'));
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError(Mage::helper('score')->__('Konduto score cannot be updated'));
