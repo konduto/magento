@@ -146,7 +146,7 @@
                     </get_konduto_score>
                 </observers>
             </sales_model_service_quote_submit_success>
-            <controller_action_postdispatch>
+            <controller_action_postdispatch_onestepcheckout>
                 <observers>
                     <get_konduto_score>
                         <type>singleton</type>
@@ -154,7 +154,16 @@
                         <method>sendScoreRequest</method>
                     </get_konduto_score>
                 </observers>
-            </controller_action_postdispatch>
+            </controller_action_postdispatch_onestepcheckout>
+            <controller_action_postdispatch_checkout>
+                <observers>
+                    <get_konduto_score>
+                        <type>singleton</type>
+                        <class>Konduto_Score_Model_Observer</class>
+                        <method>sendScoreRequest</method>
+                    </get_konduto_score>
+                </observers>
+            </controller_action_postdispatch_checkout>
             <!-- <core_block_abstract_to_html_before>
                 <observers>
                     <konduto_invoice>
