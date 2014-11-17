@@ -90,14 +90,16 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
         $data = json_encode($data);
         $header = array();
         $header[] = 'Content-type: application/json; charset=utf-8';
-        $header[] = 'X-Requested-With: Magento v1.5.2';
+        $header[] = 'X-Requested-With: Magento v1.5.3';
         $mode = Mage::getStoreConfig('scoreoptions/messages/mode');
         if ($mode == 1) {
             $private = Mage::getStoreConfig('scoreoptions/messages/productionprikey');
-            $sslVerify = true;
+            $sslVerifyHost = 2;
+            $sslVerifyPeer = true;
         } else {
             $private = Mage::getStoreConfig('scoreoptions/messages/sandboxprikey');
-            $sslVerify = false;
+            $sslVerifyHost = false;
+            $sslVerifyPeer = false;
         }
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -107,10 +109,9 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => $header,
-            CURLOPT_CONNECTTIMEOUT => 30,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_SSL_VERIFYHOST => $sslVerify,
-            CURLOPT_SSL_VERIFYPEER => $sslVerify
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_SSL_VERIFYHOST => $sslVerifyHost,
+            CURLOPT_SSL_VERIFYPEER => $sslVerifyPeer
         ));
         $resp = array();
         try {
