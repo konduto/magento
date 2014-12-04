@@ -24,12 +24,14 @@ class Konduto_Score_Model_Observer {
     }
 
     public function setScorePayment(Varien_Event_Observer $evt) {
+      if (Mage::getSingleton('core/session')->getScorePrepared()) {
         $helper = Mage::helper('score/order');
         $order = $evt->getEvent()->getOrder();
         if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
             $response = $helper->setOrderPayment($order);
         }
         return;
+      }
     }
     
     public function sendScoreRequest(Varien_Event_Observer $evt) {
@@ -39,6 +41,7 @@ class Konduto_Score_Model_Observer {
             $response = $helper->fireRequest();
           }
           Mage::getSingleton('core/session')->unsScorePrepared();
+          Mage::getSingleton('core/session')->unsScoreData();
           return;
         }
     }
