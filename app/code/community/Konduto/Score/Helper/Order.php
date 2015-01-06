@@ -2,38 +2,49 @@
 
 class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
 
-    public function getOrderData($order, $visitor = NULL) {
+    public function getOrderData($order, $payment_status, $visitor = null) {
         if ($visitor == NULL) { $visitor = $this->getVisitorId(); }
-        $odm = Mage::getModel('sales/quote')->load($order->getQuoteId());
-        $order_id = "Try-".$order->getIncrementId()."-".uniqid();
-        $currency = $odm->getQuoteCurrencyCode();
+        //$odm = Mage::getModel('sales/quote')->load($order->getQuoteId());
         $payment = $this->getPaymentDetails($order);
-        if (!$payment['include']) { 
-          Mage::getSingleton('core/session')->unsScorePrepared();
+        if (!$payment['include']) {
           if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
             Mage::log('No credit card detected. Will not send for analysis.', null, 'konduto.log');
           }
           return;
         }
+        $payment["status"] = $payment_status;
         unset($payment['include']);
+        if ($payment_status === "pending") {
+          $order_id = $order->getIncrementId();
+        }
+        else if ($payment_status === "declined") {
+          $order_id = "Try-".$order->getIncrementId()."-".uniqid();
+        }
+        else {
+          if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
+            Mage::log('Payment status is not supported:'.$payment_status, null, 'konduto.log');
+          }
+          return;
+        }
+        $currency = $order->getQuoteCurrencyCode();
         $billing = $order->getBillingAddress()->getData();
         $shipping = $order->getShippingAddress()->getData();
-        if ($odm->getCustomerId() == '' || $odm->getCustomerId() == NULL) { $customer_id = $odm->getCustomerEmail(); }
-        else { $customer_id = $odm->getCustomerId(); }
+        if ($order->getCustomerId() == '' || $order->getCustomerId() == NULL) { $customer_id = $order->getCustomerEmail(); }
+        else { $customer_id = $order->getCustomerId(); }
         $data['id'] = substr($order_id,0,100);
-        $data['total_amount'] = (float) $odm->getGrandTotal();
-        $data['shipping_amount'] = (float) $odm->getShippingAmount();
-        $data['tax_amount'] = (float) $odm->getTaxAmount();
+        $data['total_amount'] = (float) $order->getGrandTotal();
+        $data['shipping_amount'] = (float) $order->getShippingAmount();
+        $data['tax_amount'] = (float) $order->getTaxAmount();
         $data['currency'] = $currency;
         $data['visitor'] = substr($visitor,0,100);
         $data['customer'] = array(
             'id' => substr($customer_id,0,100),
-            'name' => substr($odm->getCustomerFirstname() . " " . $odm->getCustomerLastname(),0,100),
+            'name' => substr($order->getCustomerFirstname() . " " . $order->getCustomerLastname(),0,100),
             'phone1' => substr($billing['telephone'],0,100),
-            'email' => substr($odm->getCustomerEmail(),0,100)
+            'email' => substr($order->getCustomerEmail(),0,100)
         );
-        if (!($odm->getCustomerTaxvat() == NULL || $odm->getCustomerTaxvat() == " ")) {
-            $data['customer']['tax_id'] = substr($odm->getCustomerTaxvat(),0,100);
+        if (!($order->getCustomerTaxvat() == NULL || $order->getCustomerTaxvat() == " ")) {
+            $data['customer']['tax_id'] = substr($order->getCustomerTaxvat(),0,100);
         }
         $data['payment'][] = $payment;
         $data['billing'] = array(
@@ -73,52 +84,31 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
                 $data[$key] = array_filter($value);
             }
         }
-        $data['analyze'] = false;
-        Mage::getSingleton('core/session')->setScoreData(serialize($data));
+        $data['analyze'] = ($payment_status === "pending" ? true : false);
+        $this->fireRequest($data, $order->getId());
     }
 
-    public function setOrderPayment($order) {
-        $data = unserialize(Mage::getSingleton('core/session')->getScoreData());
-        if ((!isset($data)) || (!$data)) { 
-          Mage::getSingleton('core/session')->unsScorePrepared();
-          Mage::getSingleton('core/session')->unsScoreData();
-          if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
-            Mage::log('No serialized data found. Aborting...', null, 'konduto.log');
-          }
-          return;
-        }
-        $data['id'] = $order->getIncrementId();
-        $data['payment'][0]['status'] = "pending";
-        $data['analyze'] = true;
-        $data['oid'] = $order->getId();
-        Mage::getSingleton('core/session')->setScoreData(serialize($data));
-    }
-    
-    public function fireRequest() {
-        $data = unserialize(Mage::getSingleton('core/session')->getScoreData());
+    public function fireRequest($data, $oid = null) {
         if ((!isset($data)) || (!$data)) {
-          Mage::getSingleton('core/session')->unsScorePrepared();
-          Mage::getSingleton('core/session')->unsScoreData();
           if (Mage::getStoreConfig("scoreoptions/messages/debug")) {
-            Mage::log('No serialized data found. Aborting...', null, 'konduto.log');
+            Mage::log('No data found. Aborting...', null, 'konduto.log');
           }
           return;
-        }
-        if (isset($data['oid'])) { 
-          $oid = $data['oid'];
-          unset($data['oid']);
         }
         $data = json_encode($data);
         $header = array();
         $header[] = 'Content-type: application/json; charset=utf-8';
-        $header[] = 'X-Requested-With: Magento v1.5.4';
+        $header[] = 'X-Requested-With: Magento v1.6.1';
         $mode = Mage::getStoreConfig('scoreoptions/messages/mode');
         if ($mode == 1) {
             $private = Mage::getStoreConfig('scoreoptions/messages/productionprikey');
-            $sslVerify = true;
-        } else {
+            $sslVerifyHost = 2;
+            $sslVerifyPeer = true;
+        }
+        else {
             $private = Mage::getStoreConfig('scoreoptions/messages/sandboxprikey');
-            $sslVerify = false;
+            $sslVerifyHost = false;
+            $sslVerifyPeer = false;
         }
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -130,8 +120,8 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
             CURLOPT_HTTPHEADER => $header,
             CURLOPT_CONNECTTIMEOUT => 30,
             CURLOPT_TIMEOUT => 30,
-            CURLOPT_SSL_VERIFYHOST => $sslVerify,
-            CURLOPT_SSL_VERIFYPEER => $sslVerify
+            CURLOPT_SSL_VERIFYHOST => $sslVerifyHost,
+            CURLOPT_SSL_VERIFYPEER => $sslVerifyPeer
         ));
         $resp = array();
         try {
@@ -143,7 +133,6 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
             Mage::log('request==>' . $data, null, 'konduto.log');
             Mage::log('response=>' . $resp, null, 'konduto.log');
         }
-        
         if (isset($oid)) {
           $save = $this->saveData($data, $resp, $oid);
         }
@@ -156,7 +145,6 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
         $cc_six = substr($ccNumber, 0, 6);
         $ret["type"] = "credit";
         $ret["include"] = false;
-        $ret['status'] = "declined";
         if (($payment->getCcExpMonth()) && ($payment->getCcExpYear())) {
           $ret["expiration_date"] = sprintf("%02d", $payment->getCcExpMonth()) . $payment->getCcExpYear();
         }        

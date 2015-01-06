@@ -12,7 +12,8 @@ class Konduto_Score_Model_Observer {
         'catalog_category_default',
         'catalog_product_view',
         'cms_index_index',
-        'catalog_category_view'
+        'catalog_category_view',
+        'onestepcheckout_index_index'
     );
 
     public function setTag(Varien_Event_Observer $evt) {
@@ -23,39 +24,22 @@ class Konduto_Score_Model_Observer {
         $evt->getEvent()->getLayout()->getUpdate()->addHandle('konduto_'.$tag);
     }
 
-    public function setScorePayment(Varien_Event_Observer $evt) {
-      if (Mage::getSingleton('core/session')->getScorePrepared()) {
-        $helper = Mage::helper('score/order');
-        $order = $evt->getEvent()->getOrder();
-        if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
-            $response = $helper->setOrderPayment($order);
-        }
-        return;
+    public function sendOrderPaymentOk(Varien_Event_Observer $evt) {
+      $helper = Mage::helper('score/order');
+      $order = $evt->getEvent()->getOrder();
+      if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
+        $response = $helper->getOrderData($order, 'pending');
       }
     }
     
-    public function sendScoreRequest(Varien_Event_Observer $evt) {
-        if (Mage::getSingleton('core/session')->getScorePrepared()) {
-          $helper = Mage::helper('score/order');
-          if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
-            $response = $helper->fireRequest();
-          }
-          Mage::getSingleton('core/session')->unsScorePrepared();
-          Mage::getSingleton('core/session')->unsScoreData();
-          return;
-        }
+    public function sendOrderPaymentFail(Varien_Event_Observer $evt) {
+      $helper = Mage::helper('score/order');
+      $order = $evt->getEvent()->getOrder();
+      if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
+        $response = $helper->getOrderData($order, 'declined');
+      }
     }
     
-    public function prepareScore(Varien_Event_Observer $evt) {
-        $helper = Mage::helper('score/order');
-        $order = $evt->getEvent()->getOrder();
-        Mage::getSingleton('core/session')->setScorePrepared(true);
-        if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
-            $response = $helper->getOrderData($order);
-        }
-        return;
-    }
-
     public function addManualButton($evt) {
         $order_id = Mage::app()->getFrontController()->getRequest()->getParam('order_id');
         $score_details = Mage::getModel('score/score')->getCollection()->addFieldToFilter('order_no', $order_id)->getFirstItem();

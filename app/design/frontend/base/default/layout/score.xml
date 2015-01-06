@@ -92,6 +92,18 @@
             </block>
         </reference>
     </konduto_checkout_onepage_index>
+
+    <konduto_onestepcheckout_index_index>
+        <reference name="head">
+            <block type="core/text" name="checkout_kdt">
+                <action method="setText">
+                    <text>
+                <![CDATA[<meta name="kdt:page" content="checkout"/>]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </konduto_onestepcheckout_index_index>
     
     <konduto_checkout_cart_index>
         <reference name="head">
