@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Konduto_Score>
-            <version>0.1.0</version>
+            <version>1.7.0</version>
         </Konduto_Score>
     </modules>
     <frontend>
@@ -50,6 +50,26 @@
                 </admin>
             </resources>
         </acl>
+        <events>
+            <core_block_abstract_prepare_layout_before>
+                <observers>
+                    <customgrid_column_append>
+                        <type>model</type>
+                        <class>Konduto_Score_Model_Observer</class>
+                        <method>appendRecommendationColumn</method>
+                    </customgrid_column_append>
+                </observers>
+            </core_block_abstract_prepare_layout_before>
+            <sales_order_grid_collection_load_before>
+                <observers>
+                    <customgrid_column_append>
+                        <type>model</type>
+                        <class>Konduto_Score_Model_Observer</class>
+                        <method>fillRecommendationColumn</method>
+                    </customgrid_column_append>
+                </observers>
+            </sales_order_grid_collection_load_before>
+        </events>
         <layout>
             <updates>
                 <score>
@@ -108,7 +128,6 @@
             </score>
             <adminhtml>
                 <rewrite>
-                    <sales_order_grid>Konduto_Score_Block_Adminhtml_Order_Grid</sales_order_grid>
                     <sales_order_view_info>Konduto_Score_Block_Sales_Order_View_Score</sales_order_view_info>
                 </rewrite>
             </adminhtml>

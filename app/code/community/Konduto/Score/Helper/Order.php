@@ -97,8 +97,8 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
         }
         $data = json_encode($data);
         $header = array();
-        $header[] = 'Content-type: application/json; charset=utf-8';
-        $header[] = 'X-Requested-With: Magento v1.6.1';
+        $header[] = 'Content-type: application/json';
+        $header[] = 'X-Requested-With: Magento v1.6.4';
         $mode = Mage::getStoreConfig('scoreoptions/messages/mode');
         if ($mode == 1) {
             $private = Mage::getStoreConfig('scoreoptions/messages/productionprikey');
@@ -118,8 +118,8 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => $header,
-            CURLOPT_CONNECTTIMEOUT => 30,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => 10,
             CURLOPT_SSL_VERIFYHOST => $sslVerifyHost,
             CURLOPT_SSL_VERIFYPEER => $sslVerifyPeer
         ));
@@ -145,9 +145,12 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
         $cc_six = substr($ccNumber, 0, 6);
         $ret["type"] = "credit";
         $ret["include"] = false;
-        if (($payment->getCcExpMonth()) && ($payment->getCcExpYear())) {
-          $ret["expiration_date"] = sprintf("%02d", $payment->getCcExpMonth()) . $payment->getCcExpYear();
-        }        
+        $expmo = sprintf("%02d", $payment->getCcExpMonth());
+        $expyear = $payment->getCcExpYear();
+        $expyear = (strlen($expyear) == 2 ? "20" . $expyear : $expyear);
+        if (($expmo) && ($expyear)) {
+          $ret["expiration_date"] = $expmo . $expyear;
+        }       
         switch ($payment->getMethod()) {
             case 'authorizenet':
                 $ret["include"] = true;

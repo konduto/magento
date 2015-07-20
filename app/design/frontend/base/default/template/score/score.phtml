@@ -1,6 +1,7 @@
 <?php
 $public = '';
-if (Mage::getStoreConfig("scoreoptions/messages/activate")) {
+if (!Mage::getStoreConfig("scoreoptions/messages/activate")) return false;
+elseif (Mage::getStoreConfig("scoreoptions/messages/activate")) {
   $mode = Mage::getStoreConfig('scoreoptions/messages/mode');
   if ($mode == 1) { $public = Mage::getStoreConfig('scoreoptions/messages/productionpublickey'); }
   else { $public = Mage::getStoreConfig('scoreoptions/messages/sandboxpublickey'); }

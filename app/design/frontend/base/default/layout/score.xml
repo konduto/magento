@@ -2,14 +2,13 @@
 <layout version="0.1.0">
 
     <konduto_js>
-        <reference name="footer">
-        	<action method="setCacheLifetime"><s>0</s></action>
+        <reference name="before_body_end" ifconfig="scoreoptions/messages/activate">
             <block type="core/template" name="scorejs" template="score/score.phtml" before="-"/>
         </reference>
     </konduto_js>
         
     <konduto_cms_index_index>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="home_kdt">
                 <action method="setText">
                     <text>
@@ -21,7 +20,7 @@
     </konduto_cms_index_index>
 
     <konduto_catalog_product_view>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="product_kdt">
                 <action method="setText">
                     <text>
@@ -34,7 +33,7 @@
     </konduto_catalog_product_view>
     
     <konduto_catalogsearch_result_index>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="search_kdt">
                 <action method="setText">
                     <text>
@@ -46,7 +45,7 @@
     </konduto_catalogsearch_result_index>
     
     <konduto_catalogsearch_advanced_result>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="search_kdt">
                 <action method="setText">
                     <text>
@@ -58,7 +57,7 @@
     </konduto_catalogsearch_advanced_result>
     
     <konduto_customer_account_forgotpassword>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="password_kdt">
                 <action method="setText">
                     <text>
@@ -70,7 +69,7 @@
     </konduto_customer_account_forgotpassword>
     
     <konduto_customer_account_create>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="acccreate_kdt">
                 <action method="setText">
                     <text>
@@ -82,7 +81,7 @@
     </konduto_customer_account_create>
     
     <konduto_checkout_onepage_index>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="checkout_kdt">
                 <action method="setText">
                     <text>
@@ -94,7 +93,7 @@
     </konduto_checkout_onepage_index>
 
     <konduto_onestepcheckout_index_index>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="checkout_kdt">
                 <action method="setText">
                     <text>
@@ -106,7 +105,7 @@
     </konduto_onestepcheckout_index_index>
     
     <konduto_checkout_cart_index>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="cart_kdt">
                 <action method="setText">
                     <text>
@@ -118,7 +117,7 @@
     </konduto_checkout_cart_index>
     
     <konduto_customer_account_index>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="acc_kdt">
                 <action method="setText">
                     <text>
@@ -130,7 +129,7 @@
     </konduto_customer_account_index>
     
     <konduto_catalog_category_default>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="category_kdt">
                 <action method="setText">
                     <text>
@@ -142,7 +141,7 @@
     </konduto_catalog_category_default>
 
     <konduto_catalog_category_view>
-        <reference name="head">
+        <reference name="head" ifconfig="scoreoptions/messages/activate">
             <block type="core/text" name="category_kdt">
                 <action method="setText">
                     <text>

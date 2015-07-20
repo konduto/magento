@@ -93,7 +93,6 @@
                                 <mode>1</mode>
                             </depends>
                         </productionprikey>
-                        
                         <reviewaction>
                             <label>Analysis Mode</label>
                             <frontend_type>select</frontend_type>
@@ -103,24 +102,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>  
                         </reviewaction>
-                        <reviewupscore>
-                            <label>Decline recommendation prompt</label>
-                            <comment>If score is higher than this, prompt me for approval during invoicing.</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>8</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>  
-                        </reviewupscore>
-                        <reviewloscore>
-                            <label>Approve recommendation prompt</label>
-                            <comment>If the score is lower than this, do not prompt me for approval.</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>9</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>  
-                        </reviewloscore>
                         <debug>
                             <label>Debug</label>
                             <comment><![CDATA[konduto.log file is created in var/log where you can see details of of request and response.<br> You also need to enable logging from Advance-> Developer-> Log Settings]]></comment>
