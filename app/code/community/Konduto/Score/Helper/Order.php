@@ -98,7 +98,7 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
         $data = json_encode($data);
         $header = array();
         $header[] = 'Content-type: application/json';
-        $header[] = 'X-Requested-With: Magento v1.6.4';
+        $header[] = 'X-Requested-With: Magento v1.7.1';
         $mode = Mage::getStoreConfig('scoreoptions/messages/mode');
         if ($mode == 1) {
             $private = Mage::getStoreConfig('scoreoptions/messages/productionprikey');
