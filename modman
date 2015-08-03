@@ -1,6 +1,6 @@
 app/code/community/Konduto/Score app/code/community/Konduto/Score
 app/etc/modules/Konduto_Score.xml app/etc/modules/Konduto_Score.xml
-app/locale/pt_BR/Konduto_Score.csv app/etc/modules/Konduto_Score.xml
+app/locale/pt_BR/Konduto_Score.csv app/locale/pt_BR/Konduto_Score.csv
 
 app/design/adminhtml/default/default/layout/score.xml app/design/adminhtml/default/default/layout/score.xml
 app/design/adminhtml/default/default/template/score app/design/adminhtml/default/default/template/score
