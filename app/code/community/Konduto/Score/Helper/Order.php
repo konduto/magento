@@ -118,8 +118,7 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => $header,
-            CURLOPT_CONNECTTIMEOUT => 5,
-            CURLOPT_TIMEOUT => 10,
+            CURLOPT_TIMEOUT => 60,
             CURLOPT_SSL_VERIFYHOST => $sslVerifyHost,
             CURLOPT_SSL_VERIFYPEER => $sslVerifyPeer
         ));
@@ -150,7 +149,7 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
         $expyear = (strlen($expyear) == 2 ? "20" . $expyear : $expyear);
         if (($expmo) && ($expyear)) {
           $ret["expiration_date"] = $expmo . $expyear;
-        }       
+        }
         switch ($payment->getMethod()) {
             case 'authorizenet':
                 $ret["include"] = true;
@@ -182,14 +181,14 @@ class Konduto_Score_Helper_Order extends Mage_Core_Helper_Abstract {
                 break;
         }
 
-        if ((is_string($cc_six)) && (strlen($cc_six) == 6)) { 
+        if ((is_string($cc_six)) && (strlen($cc_six) == 6)) {
             $ret["bin"] = $cc_six;
             $ret["include"] = true;
         }
-        
+
         return $ret;
     }
-    
+
     public function getVisitorId($id = NULL) {
         if (isset($_COOKIE['_kdt'])) {
           $cookie = json_decode($_COOKIE['_kdt'], true);
