@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block as="catalog_product_view_tag" class="Konduto\Antifraud\Block\Html\Fingerprint" name="html.html_product_tag" template="Konduto_Antifraud::html/catalog-product-view-meta-tag.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

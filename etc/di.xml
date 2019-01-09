@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="KondutoAntifraudPlaceAfterPlugin" type="Konduto\Antifraud\Plugin\Order\PlaceAfterPlugin" sortOrder="99" />
+    </type>
+    <type name="Konduto\Antifraud\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Konduto\Antifraud\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">kondutoLog</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Konduto\Antifraud\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

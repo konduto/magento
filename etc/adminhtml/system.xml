@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <system>
+        <tab id="konduto" translate="label" sortOrder="0">
+            <label>Konduto</label>
+        </tab>
+        <section id="konduto_antifraud" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <tab>konduto</tab>
+            <label>Antifraud</label>
+            <resource>Konduto_Antifraud::config</resource>
+            <group id="settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Settings</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Module?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="environment" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Store Environment</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\Environment</source_model>
+                </field>
+
+                <field id="sandbox_private_key" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Sandbox Private Key</label>
+                    <comment>TXXXXXXXXXXXXXXXXXXXX (21 characters)</comment>
+                    <depends>
+                        <field id="environment">0</field>
+                    </depends>
+                </field>
+
+                <field id="sandbox_public_key" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Sandbox Public Key</label>
+                    <comment>TXXXXXXXXXX (11 characters)</comment>
+                    <depends>
+                        <field id="environment">0</field>
+                    </depends>
+                </field>
+
+                <field id="production_private_key" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Production Private Key</label>
+                    <comment>PXXXXXXXXXXXXXXXXXXXX (21 characters)</comment>
+                    <depends>
+                        <field id="environment">1</field>
+                    </depends>
+                </field>
+
+                <field id="production_public_key" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Production Public Key</label>
+                    <comment>PXXXXXXXXXX (11 characters)</comment>
+                    <depends>
+                        <field id="environment">1</field>
+                    </depends>
+                </field>
+
+                <field id="debug" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Logs?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="mass_order_qty" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Mass create order quantity</label>
+                </field>
+
+                <field id="payment_enabled" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Allowed payment methods</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\PaymentMethods</source_model>
+                </field>
+            </group>
+
+            <group id="manage_status" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Manage Status</label>
+                <field id="automatic_konduto_update" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable automatic order update by Konduto?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="approved_status" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Status after Approved</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\OrderStatus</source_model>
+                </field>
+
+                <field id="declined_status" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Status after Declined</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\OrderStatus</source_model>
+                </field>
+
+                <field id="not_authorized_status" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Status after Not Authorized</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\OrderStatus</source_model>
+                </field>
+
+                <field id="canceled_status" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Status after Canceled</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\OrderStatus</source_model>
+                </field>
+
+                <field id="fraud_status" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Status after Fraud</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\OrderStatus</source_model>
+                </field>
+            </group>
+
+            <group id="address_mapping" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Address Mapping</label>
+                <field id="address_street_map" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attribute for Street</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\AddressAttribute</source_model>
+                </field>
+                <field id="address_number_map" translate="label comment" type="select" sortOrder="35" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attribute for Street Number</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\AddressAttribute</source_model>
+                </field>
+                <field id="address_neighborhood_map" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attribute for Neighborhood</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\AddressAttribute</source_model>
+                </field>
+                <field id="address_complement_map" translate="label comment" type="select" sortOrder="45" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attribute for Complement</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\AddressAttribute</source_model>
+                </field>
+            </group>
+
+            <group id="payment_mapping" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Payment Mapping</label>
+                <field id="credit_map" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Credit Card Map</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\PaymentMethods</source_model>
+                </field>
+                <field id="debit_map" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Debit Card Map</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\PaymentMethods</source_model>
+                </field>
+                <field id="boleto_map" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Boleto Map</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\PaymentMethods</source_model>
+                </field>
+                <field id="transfer_map" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Transfer Map</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\PaymentMethods</source_model>
+                </field>
+                <field id="voucher_map" translate="label comment" type="select" sortOrder="25" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Voucher Map</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\PaymentMethods</source_model>
+                </field>
+            </group>
+
+            <group id="customer_mapping" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Customer Mapping</label>
+                <field id="konduto_cpf_cnpj" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attribute for CPF/CNPJ</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\CustomerAttribute</source_model>
+                </field>
+            </group>
+
+            <group id="cron_config" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Cron Settings</label>
+                <field id="frequency" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cron Execution Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>Konduto\Antifraud\Model\Config\Source\CronConfig</backend_model>
+                </field>
+                <field id="time" translate="label comment" sortOrder="2" type="time" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cron Start Time</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <konduto_antifraud>
+            <settings>
+                <public_key/>
+            </settings>
+            <address_mapping>
+                <address_street_map>0</address_street_map>
+                <address_number_map>1</address_number_map>
+                <address_neighborhood_map>2</address_neighborhood_map>
+                <address_complement_map>3</address_complement_map>
+            </address_mapping>
+            <customer_mapping>
+                <konduto_cpf_cnpj>taxvat</konduto_cpf_cnpj>
+            </customer_mapping>
+        </konduto_antifraud>
+    </default>
+</config>
