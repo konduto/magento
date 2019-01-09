@@ -1,48 +1,6 @@
-# Ruby
-.rake_test_cache
-.rvmrc
-.rbenv-version
+composer.phar
+/vendor/
 
-# Emacs
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-.elc
-auto-save-list
-tramp
-.\#*
-
-# Emacs org-mode
-.org-id-locations
-*_archive
-
-# SublimeText
-*.sublime-workspace
-
-# TextMate
-*.tmproj
-*.tmproject
-tmtags
-
-# Vim
-.*.s[a-w][a-z]
-*.un~
-Session.vim
-.netrwhist
-*~
-
-# OS X
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
-.Spotlight-V100
-.Trashes
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
+# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# composer.lock
