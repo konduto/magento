@@ -2,14 +2,17 @@
     if (!$this->isEnabled()) {
         return false;
     }
-    $customerId = $this->getCustomerId();
+
+    if ($this->isCustomerTag()) {
+        $customerIdentifier = $this->getKondutoIdentifier();
+    }
 ?>
 <script type="text/javascript">
     var __kdt = __kdt || [];
-    __kdt.push({"public_key":"<?php echo $this->getPublicKey(); ?>"}); // A chave pública identifica a sua loja
+    __kdt.push({"public_key":"<?php echo $this->getPublicKey(); ?>"});
     
-    <?php if (isset($customerId)): ?>
-    __kdt.push({"customer_id":"<?php echo $customerId ?>"});
+    <?php if (isset($customerIdentifier)): ?>
+    __kdt.push({"customer_id":"<?php echo $customerIdentifier ?>"});
     <?php endif; ?>
     
     (function() {

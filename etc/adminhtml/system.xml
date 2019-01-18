@@ -16,6 +16,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="enabled_analysis" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Order Dispatch?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Activating the option, requests that go to the queue will be sent for analysis by Konduto.</comment>
+                </field>
+
                 <field id="environment" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Store Environment</label>
                     <source_model>Konduto\Antifraud\Model\Config\Source\Environment</source_model>
@@ -56,13 +62,10 @@
                 <field id="debug" translate="label comment" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Enable Logs?</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Activating this option will create a file called konduto.log in the var / log folder. The log will contain the start and end date and time of the Cron. In addition to error messages.</comment>
                 </field>
 
-                <field id="mass_order_qty" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Mass create order quantity</label>
-                </field>
-
-                <field id="payment_enabled" translate="label comment" type="multiselect" sortOrder="90" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="payment_enabled" translate="label comment" type="multiselect" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Allowed payment methods</label>
                     <source_model>Konduto\Antifraud\Model\Config\Source\PaymentMethods</source_model>
                 </field>
@@ -147,21 +150,46 @@
 
             <group id="customer_mapping" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Customer Mapping</label>
-                <field id="konduto_cpf_cnpj" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Attribute for CPF/CNPJ</label>
+                <field id="konduto_identifier" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Konduto Customer Identifier</label>
+                    <source_model>Konduto\Antifraud\Model\Config\Source\KondutoIdentifier</source_model>
+                    <comment>Unique customer identifier. It can be any value (sequential, document, email) as long as it is consistent in future orders.</comment>
+                </field>
+                <field id="konduto_cpf_cnpj" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Attribute for Fiscal Document</label>
                     <source_model>Konduto\Antifraud\Model\Config\Source\CustomerAttribute</source_model>
+                    <comment>Customer's tax document number (CPF, CNPJ, etc.).</comment>
+                </field>
+                <field id="konduto_customer_tag" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Client Tag?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Activating this option, the attribute chosen in the field above, will be sent by the Konduto script, the Customer tag.</comment>
                 </field>
             </group>
 
             <group id="cron_config" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
-                <label>Cron Settings</label>
-                <field id="frequency" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Cron Execution Frequency</label>
-                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
-                    <backend_model>Konduto\Antifraud\Model\Config\Source\CronConfig</backend_model>
+                <label>Advanced Options</label>
+                <field id="enabled_advanced_options" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable advanced settings?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Watch out! It is recommended that you contact Konduto before enabling this option.</comment>
                 </field>
-                <field id="time" translate="label comment" sortOrder="2" type="time" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Cron Start Time</label>
+
+                <field id="mass_order_qty" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Mass create order quantity</label>
+                    <comment>The standard number of orders submitted for review is 120.</comment>
+                    <depends>
+                        <field id="enabled_advanced_options">1</field>
+                    </depends>
+                </field>
+
+                <field id="cron_frequency" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cron Execution Frequency</label>
+                    <backend_model>Konduto\Antifraud\Model\Config\Source\CronConfig</backend_model>
+                    <comment>The default Cron execution frequency is every minute.</comment>
+                    <depends>
+                        <field id="enabled_advanced_options">1</field>
+                    </depends>
                 </field>
             </group>
         </section>

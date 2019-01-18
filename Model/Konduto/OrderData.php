@@ -69,8 +69,8 @@ class OrderData extends AbstractData
         if ($order->getVisitorId()) {
             $orderKonduto->setVisitor($order->getVisitorId());
         }
-        $orderKonduto->setTotalAmount((float) $this->helper->treatCents($order->getGrandTotal()));
-        $orderKonduto->setShippingAmount((float) $this->helper->treatCents($order->getShippingAmount()));
+        $orderKonduto->setTotalAmount((float) $this->treatCents($order->getGrandTotal()));
+        $orderKonduto->setShippingAmount((float) $this->treatCents($order->getShippingAmount()));
         $orderKonduto->setCurrency($order->getBaseCurrencyCode());
         $orderKonduto->setIp($order->getRemoteIp());
         $orderKonduto->setCustomer($this->customerData->getCustomerData($order));
@@ -82,5 +82,10 @@ class OrderData extends AbstractData
         $orderKonduto->setShoppingCart($this->shoppingCartData->getItems($order));
 
         return (object) $orderKonduto;
+    }
+
+    public function treatCents($number)
+    {
+        return number_format($number, 2, '.', '');
     }
 }

@@ -21,29 +21,36 @@ use Konduto\Antifraud\Logger\Logger;
 class Data
 {
     const ENABLED_PATH = 'konduto_antifraud/settings/enabled';
+    const ENABLED_ANALYSIS_PATH = 'konduto_antifraud/settings/enabled_analysis';
     const DEBUG_PATH = 'konduto_antifraud/settings/debug';
-    const MASS_ORDER_QTY_PATH = 'konduto_antifraud/settings/mass_order_qty';
+    const PAYMENTS_PATH = 'konduto_antifraud/settings/payment_enabled';
+
     const STREET_ATTRIBUTE = 'konduto_antifraud/address_mapping/address_street_map';
     const NUMBER_ATTRIBUTE = 'konduto_antifraud/address_mapping/address_number_map';
     const COMPLEMENT_ATTRIBUTE = 'konduto_antifraud/address_mapping/address_complement_map';
     const NEIGHBORHOOD_ATTRIBUTE = 'konduto_antifraud/address_mapping/address_neighborhood_map';
+
+    const KONDUTO_IDENTIFIER_ATTRIBUTE = 'konduto_antifraud/customer_mapping/konduto_identifier';
     const CPF_CNPJ_ATTRIBUTE = 'konduto_antifraud/customer_mapping/konduto_cpf_cnpj';
+    const CUSTOMER_TAG_PATH = 'konduto_antifraud/customer_mapping/konduto_customer_tag';
+
     const PAYMENT_CREDIT_ATTRIBUTE = 'konduto_antifraud/payment_mapping/credit_map';
     const PAYMENT_DEBIT_ATTRIBUTE = 'konduto_antifraud/payment_mapping/debit_map';
     const PAYMENT_BOLETO_ATTRIBUTE = 'konduto_antifraud/payment_mapping/boleto_map';
     const PAYMENT_TRANSFER_ATTRIBUTE = 'konduto_antifraud/payment_mapping/transfer_map';
-    const PAYMENT_VOUCHER_ATTRIBUTE = 'konduto_antifraud/payment_mapping/voucher_map';
 
+    const PAYMENT_VOUCHER_ATTRIBUTE = 'konduto_antifraud/payment_mapping/voucher_map';
     const FILTER_STATUS_PATH = 'konduto_antifraud/manage_status/filter_status';
     const AUTOMATIC_KONDUTO_UPDATE_PATH = 'konduto_antifraud/manage_status/automatic_konduto_update';
-
     const APPROVED_STATUS_PATH = 'konduto_antifraud/manage_status/approved_status';
     const DECLINED_STATUS_PATH = 'konduto_antifraud/manage_status/declined_status';
     const NOT_AUTHORIZED_STATUS_PATH = 'konduto_antifraud/manage_status/not_authorized_status';
     const CANCELED_STATUS_PATH = 'konduto_antifraud/manage_status/canceled_status';
     const FRAUD_STATUS_PATH = 'konduto_antifraud/manage_status/fraud_status';
 
-    const PAYMENTS_PATH = 'konduto_antifraud/settings/payment_enabled';
+    const ENABLED_ADVANCED_OPTIONS_PATH = 'konduto_antifraud/cron_config/enabled_advanced_options';
+    const MASS_ORDER_QTY_PATH = 'konduto_antifraud/cron_config/mass_order_qty';
+    const CRON_FREQUENCY_PATH = 'konduto_antifraud/cron_config/cron_frequency';
 
     const ORDER_STATUS_APPROVED = 'approved';
     const ORDER_STATUS_DECLINED = 'declined';
@@ -139,6 +146,19 @@ class Data
         return $qty;
     }
 
+    public function isAdvancedOptions()
+    {
+        if (!$this->scopeConfig->getValue(self::ENABLED_ADVANCED_OPTIONS_PATH, ScopeInterface::SCOPE_STORE)) {
+            return false;
+        }
+        return true;
+    }
+
+    public function isCustomerTag()
+    {
+        return $this->scopeConfig->getValue(self::CUSTOMER_TAG_PATH, ScopeInterface::SCOPE_STORE);
+    }
+
     /**
      * @return mixed
      */
@@ -153,6 +173,14 @@ class Data
     public function isEnabled()
     {
         if (!$this->scopeConfig->getValue(self::ENABLED_PATH, ScopeInterface::SCOPE_STORE)) {
+            return false;
+        }
+        return true;
+    }
+
+    public function isCronEnabled()
+    {
+        if (!$this->scopeConfig->getValue(self::ENABLED_ANALYSIS_PATH, ScopeInterface::SCOPE_STORE)) {
             return false;
         }
         return true;
@@ -368,9 +396,59 @@ class Data
     /**
      * @return mixed
      */
-    public function getCustomerDocument()
+    public function getCpfCnpjAttribute()
     {
         return $this->scopeConfig->getValue(self::CPF_CNPJ_ATTRIBUTE, ScopeInterface::SCOPE_STORE);
+    }
+
+    public function getKondutoIdentifierPath()
+    {
+        $field = $this->scopeConfig->getValue(self::KONDUTO_IDENTIFIER_ATTRIBUTE, ScopeInterface::SCOPE_STORE);
+
+        switch ($field) {
+            case $field == '0':
+                return 'CustomerId';
+
+            case $field == '1':
+                return 'TaxVat';
+
+            case $field == '2':
+                return 'Email';
+
+            default:
+                return false;
+        }
+    }
+
+    public function getKondutoIdentifierData($customer)
+    {
+        $field = $this->getKondutoIdentifierPath();
+
+        switch ($field) {
+            case $field == 'CustomerId':
+                return $customer->getId();
+
+            case $field == 'TaxVat':
+                return $this->getDocumentNumber($customer);
+
+            case $field == 'Email':
+                return $customer->getEmail();
+
+            default:
+                return false;
+        }
+    }
+
+    public function getDocumentNumber($customer)
+    {
+        $field = $this->getCpfCnpjAttribute();
+        $document = $customer->getCustomAttribute($field);
+
+        if (!$document) {
+            return $this->traitDocument($customer->getTaxvat());
+        }
+
+        return $this->traitDocument($document);
     }
 
     /**
@@ -425,5 +503,10 @@ class Data
     public function treatCents($number)
     {
         return number_format($number, 2, '.', '');
+    }
+
+    public function traitDocument($document)
+    {
+        return preg_replace('/[^0-9]+/', '', $document);
     }
 }

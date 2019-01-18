@@ -42,6 +42,7 @@ class Fingerprint extends Template
         Session $customerSession,
         array $data = []
     ) {
+        $this->scopeConfig = $scopeConfig;
         $this->registry = $registry;
         $this->request = $request;
         $this->helper = $helper;
@@ -63,13 +64,21 @@ class Fingerprint extends Template
         return false;
     }
 
+    public function isCustomerTag()
+    {
+        if ($this->helper->isCustomerTag()) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @return mixed
      */
     public function getPublicKey()
     {
         $environment = $this->helper->getEnvironment();
-        return $this->_scopeConfig->getValue('konduto_antifraud/settings/'. $environment .'_public_key');
+        return $this->scopeConfig->getValue('konduto_antifraud/settings/'. $environment .'_public_key');
     }
 
     /**
@@ -102,11 +111,15 @@ class Fingerprint extends Template
     /**
      * @return bool|mixed
      */
-    public function getCustomerId()
+    public function getKondutoIdentifier()
     {
-        if (!$this->isCustomerLoggedIn()) {
-            return false;
+        $customer = $this->customerSession->getCustomer();
+        $identifier = $this->helper->getKondutoIdentifierData($customer);
+
+        if (!$identifier) {
+            $identifier = $this->customerSession->getCustomer()->getId();
         }
-        return $this->customerSession->getCustomer()->getId();
+
+        return $identifier;
     }
 }

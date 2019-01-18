@@ -101,6 +101,10 @@ class QueueManager extends AbstractModel
             return;
         }
 
+        if (!$this->helper->isCronEnabled()) {
+            return;
+        }
+
         if (!$this->helper->apiKeyIsValid()) {
             return;
         }
@@ -121,7 +125,12 @@ class QueueManager extends AbstractModel
     public function getCollection()
     {
         $collection = $this->collectionFactory->create();
-        $collection->setPageSize($this->helper->getMassOrderQuantity());
+
+        $collection->setPageSize(120);
+
+        if ($this->helper->isAdvancedOptions()) {
+            $collection->setPageSize($this->helper->getMassOrderQuantity());
+        }
         return $collection->getItems();
     }
 }

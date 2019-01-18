@@ -8,21 +8,31 @@ use Konduto\Models\Customer;
 class CustomerData extends AbstractData
 {
     private $order;
+    public $customer;
 
     public function getCustomerData($order)
     {
         $this->order = $order;
-        $customer = $this->helper->getCustomer($order->getCustomerId());
+        $this->customer = $this->helper->getCustomer($order->getCustomerId());
         $customerKonduto = new Customer;
-        $customerKonduto->setId($customer->getId());
-        $customerKonduto->setName($this->getName($customer->getFirstname()));
-        $customerKonduto->setEmail($customer->getEmail());
-        $customerKonduto->setDob($customer->getDob());
-        $customerKonduto->setTaxId($this->getDocumentNumber($customer));
-        $customerKonduto->setCreatedAt($this->getCreatedAt($customer));
+        $customerKonduto->setId($this->getKondutoIdentifier());
+        $customerKonduto->setName($this->getName($this->customer->getFirstname()));
+        $customerKonduto->setEmail($this->customer->getEmail());
+        $customerKonduto->setDob($this->customer->getDob());
+        $customerKonduto->setTaxId($this->helper->getDocumentNumber($this->customer));
+        $customerKonduto->setCreatedAt($this->getCreatedAt($this->customer));
         return (object) $customerKonduto;
     }
 
+    public function getKondutoIdentifier()
+    {
+        $identifier = $this->helper->getKondutoIdentifierData($this->customer);
+        if (!$identifier) {
+            $identifier = $this->customer->getId();
+        }
+        return $identifier;
+    }
+    
     public function getName($name)
     {
         if (!$name) {
@@ -49,25 +59,8 @@ class CustomerData extends AbstractData
         return (string) $birthDate;
     }
 
-    public function getDocumentNumber($customer)
-    {
-        $field = $this->helper->getCustomerDocument();
-        $document = $customer->getCustomAttribute($field);
-
-        if (!$document) {
-            return $this->traitDocument($customer->getTaxvat());
-        }
-
-        return $this->traitDocument($document);
-    }
-
     public function getCreatedAt($customer)
     {
         return $this->helper->getDate($customer->getCreatedAt());
-    }
-
-    private function traitDocument($document)
-    {
-        return preg_replace('/[^0-9]+/', '', $document);
     }
 }
