@@ -29,6 +29,9 @@ class PaymentData extends AbstractData
         if ($this->method === "credit") {
             $data[0]['expiration_date'] = $this->getCcExpDate($this->payment);
             $data[0]['status'] = $this->getCcStatus($this->order);
+            if ($this->payment->getCcLast4()) {
+                $data[0]['last4'] = $this->payment->getCcLast4();
+            }
         }
 
         return $data;
