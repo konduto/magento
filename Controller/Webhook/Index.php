@@ -2,10 +2,10 @@
 
 namespace Konduto\Antifraud\Controller\Webhook;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Backend\App\Action\Context;
-use Konduto\Antifraud\Model\KondutoService;
 use Konduto\Antifraud\Helper\Data;
+use Konduto\Antifraud\Model\KondutoService;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Action\Action;
 
 /**
  * Class Index
@@ -19,6 +19,8 @@ class Index extends Action
     protected $kondutoService;
 
     protected $helper;
+
+    protected $response;
 
     /**
      * Index constructor.
@@ -40,7 +42,7 @@ class Index extends Action
      */
     public function execute()
     {
-        $response = [];
+        $this->response = [];
         $success = false;
 
         try {
@@ -51,16 +53,26 @@ class Index extends Action
             }
 
             if (!$success) {
-                $this->getResponse()->setHttpResponseCode(400);
+                return $this->isNotSuccess();
             }
 
-            if ($success) {
-                $response["status"] = "ok";
-                $this->getResponse()->setHttpResponseCode(200);
-            }
-            echo json_encode($response);
+            return $this->isSuccess();
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            echo json_encode($e->getMessage());
         }
+    }
+
+    protected function isSuccess()
+    {
+        $this->getResponse()->setHttpResponseCode(200);
+        $this->response["status"] = "ok";
+        echo json_encode($this->response);
+    }
+
+    protected function isNotSuccess()
+    {
+        $this->getResponse()->setHttpResponseCode(400);
+        $this->response = json_encode($this->response);
+        echo json_encode($this->response);
     }
 }

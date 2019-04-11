@@ -14,9 +14,9 @@
             <customer_mapping>
                 <konduto_cpf_cnpj>taxvat</konduto_cpf_cnpj>
             </customer_mapping>
+            <cron_config>
+                <cron_frequency>* * * * *</cron_frequency>
+            </cron_config>
         </konduto_antifraud>
-        <cron_config>
-            <cron_frequency>* * * * *</cron_frequency>
-        </cron_config>
     </default>
 </config>

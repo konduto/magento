@@ -13,6 +13,14 @@ class CustomerData extends AbstractData
     public function getCustomerData($order)
     {
         $this->order = $order;
+
+        if ($order->getCustomerIsGuest()) {
+            $customerKonduto = new Customer;
+            $customerKonduto->setId($order->getCustomerEmail());
+            $customerKonduto->setName($order->getBillingAddress()->getFirstName());
+            $customerKonduto->setEmail($order->getCustomerEmail());
+            return $customerKonduto;
+        }
         $this->customer = $this->helper->getCustomer($order->getCustomerId());
         $customerKonduto = new Customer;
         $customerKonduto->setId($this->getKondutoIdentifier());

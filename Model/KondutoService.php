@@ -205,7 +205,7 @@ class KondutoService extends AbstractModel
         }
 
         $order = $this->orderModel->loadByIncrementId($params['order_id']);
-        if (!$order) {
+        if (!$order->getId()) {
             return false;
         }
         $this->updateHistory($order->getId(), $params['status']);
