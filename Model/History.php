@@ -15,7 +15,7 @@ class History extends AbstractModel implements HistoryInterface
     /**
      * History constructor
      */
-    protected function _construct()
+    public function _construct()
     {
         $this->_init('Konduto\Antifraud\Model\ResourceModel\History');
     }

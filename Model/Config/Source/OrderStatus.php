@@ -10,14 +10,14 @@ class OrderStatus implements ArrayInterface
     /**
      * @var \Magento\Sales\Model\Order\Config
      */
-    protected $_orderConfig;
+    public $orderConfig;
 
     /**
      * @param \Magento\Sales\Model\Order\Config $orderConfig
      */
     public function __construct(Config $orderConfig)
     {
-        $this->_orderConfig = $orderConfig;
+        $this->orderConfig = $orderConfig;
     }
 
     /**
@@ -25,7 +25,7 @@ class OrderStatus implements ArrayInterface
      */
     public function toOptionArray()
     {
-        $statuses = $this->_orderConfig->getStatuses();
+        $statuses = $this->orderConfig->getStatuses();
 
         $options = [['value' => '', 'label' => __('-- Please Select --')]];
         foreach ($statuses as $code => $label) {

@@ -180,7 +180,7 @@ class KondutoService extends AbstractModel
         try {
             $this->helper->apiKeyIsValid();
             $kondutoResponse = Konduto::updateOrderStatus($orderId, $newStatus, '');
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             throw $exception;
         }
 

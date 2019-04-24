@@ -23,7 +23,7 @@ class CronConfig extends Value
     /**
      * @var ValueFactory
      */
-    protected $configValueFactory;
+    public $configValueFactory;
 
     /**
      * CronConfig constructor.

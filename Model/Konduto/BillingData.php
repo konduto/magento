@@ -15,6 +15,12 @@ class BillingData extends AbstractData
      * @var object
      */
     private $billing;
+    public $address;
+
+    public function __construct(Address $address)
+    {
+        $this->address = $address;
+    }
 
     /**
      * @param $billing
@@ -23,18 +29,18 @@ class BillingData extends AbstractData
     public function getBillingData($billing)
     {
         $this->billing = $billing;
-        $billingKonduto = new Address;
-        $billingKonduto->setName($billing->getFirstName());
-        $billingKonduto->setAddress1($this->getAddressOne());
+        $this->address = new Address;
+        $this->address->setName($billing->getFirstName());
+        $this->address->setAddress1($this->getAddressOne());
         if ($this->getAddressTwo()) {
-            $billingKonduto->setAddress2($this->getAddressTwo());
+            $this->address->setAddress2($this->getAddressTwo());
         }
-        $billingKonduto->setCity($this->getCity());
-        $billingKonduto->setState($this->getState());
-        $billingKonduto->setZip($this->getZipCode());
-        $billingKonduto->setCountry($this->getCountry());
+        $this->address->setCity($this->getCity());
+        $this->address->setState($this->getState());
+        $this->address->setZip($this->getZipCode());
+        $this->address->setCountry($this->getCountry());
 
-        return $billingKonduto;
+        return $this->address;
     }
 
     /**

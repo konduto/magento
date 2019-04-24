@@ -6,6 +6,7 @@ use Konduto\Antifraud\Helper\Data;
 use Konduto\Antifraud\Model\KondutoService;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\Filesystem\Driver\File;
 
 /**
  * Class Index
@@ -16,11 +17,13 @@ class Index extends Action
     /**
      * @var KondutoService
      */
-    protected $kondutoService;
+    public $kondutoService;
 
-    protected $helper;
+    public $helper;
 
-    protected $response;
+    public $response;
+
+    public $file;
 
     /**
      * Index constructor.
@@ -30,10 +33,12 @@ class Index extends Action
     public function __construct(
         KondutoService $kondutoService,
         Data $helper,
-        Context $context
+        Context $context,
+        File $file
     ) {
         $this->kondutoService = $kondutoService;
         $this->helper = $helper;
+        $this->file = $file;
         parent::__construct($context);
     }
 
@@ -46,7 +51,8 @@ class Index extends Action
         $success = false;
 
         try {
-            $params = json_decode(utf8_encode(file_get_contents('php://input')), true);
+            $getParams = $this->file->fileGetContents('php://input');
+            $params = json_decode(utf8_encode($getParams), true);
 
             if ($params) {
                 $success = $this->kondutoService->updateOrder($params);
@@ -58,21 +64,21 @@ class Index extends Action
 
             return $this->isSuccess();
         } catch (\Exception $e) {
-            echo json_encode($e->getMessage());
+            return $this->getResponse()->setBody(json_encode($e->getMessage()));
         }
     }
 
-    protected function isSuccess()
+    private function isSuccess()
     {
         $this->getResponse()->setHttpResponseCode(200);
         $this->response["status"] = "ok";
-        echo json_encode($this->response);
+        return $this->getResponse()->setBody(json_encode($this->response));
     }
 
-    protected function isNotSuccess()
+    private function isNotSuccess()
     {
         $this->getResponse()->setHttpResponseCode(400);
         $this->response = json_encode($this->response);
-        echo json_encode($this->response);
+        return $this->getResponse()->setBody(json_encode($this->response));
     }
 }

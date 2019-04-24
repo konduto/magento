@@ -13,7 +13,7 @@ abstract class AbstractData
     /**
      * @var Data
      */
-    protected $helper;
+    public $helper;
 
     /**
      * AbstractData constructor.
