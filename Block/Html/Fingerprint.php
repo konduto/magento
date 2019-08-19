@@ -4,7 +4,6 @@ namespace Konduto\Antifraud\Block\Html;
 
 use Konduto\Antifraud\Helper\Data;
 use Magento\Customer\Model\Session;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
@@ -24,7 +23,6 @@ class Fingerprint extends Template
     /**
      * Fingerprint constructor.
      * @param Context $context
-     * @param ScopeConfigInterface $scopeConfig
      * @param Registry $registry
      * @param Http $request
      * @param Data $helper
@@ -33,14 +31,12 @@ class Fingerprint extends Template
      */
     public function __construct(
         Context $context,
-        ScopeConfigInterface $scopeConfig,
         Registry $registry,
         Http $request,
         Data $helper,
         Session $customerSession,
         array $data = []
     ) {
-        $this->scopeConfig = $scopeConfig;
         $this->registry = $registry;
         $this->request = $request;
         $this->helper = $helper;
@@ -76,7 +72,7 @@ class Fingerprint extends Template
     public function getPublicKey()
     {
         $environment = $this->helper->getEnvironment();
-        return $this->scopeConfig->getValue('konduto_antifraud/settings/' . $environment . '_public_key');
+        return $this->_scopeConfig->getValue('konduto_antifraud/settings/' . $environment . '_public_key');
     }
 
     /**
