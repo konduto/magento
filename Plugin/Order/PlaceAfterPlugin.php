@@ -3,6 +3,7 @@
 namespace Konduto\Antifraud\Plugin\Order;
 
 use Konduto\Antifraud\Model\QueueManager;
+use Konduto\Antifraud\Helper\Data;
 use Magento\Sales\Api\OrderManagementInterface;
 
 /**
@@ -16,9 +17,10 @@ class PlaceAfterPlugin
      * PlaceAfterPlugin constructor.
      * @param QueueManager $queueManager
      */
-    public function __construct(QueueManager $queueManager)
+    public function __construct(QueueManager $queueManager, Data $helper)
     {
         $this->queueManager = $queueManager;
+        $this->helper = $helper;
     }
 
     /**
@@ -28,6 +30,9 @@ class PlaceAfterPlugin
      */
     public function afterPlace(OrderManagementInterface $orderManagementInterface , $order)
     {
+        if (!$this->helper->isEnabled()) {
+            return $order;
+        }
         $this->queueManager->enqueueOrder($order);
         $sessionId = $this->getVisitorId();
         if ($sessionId) {
@@ -42,6 +47,7 @@ class PlaceAfterPlugin
      */
     public function getVisitorId()
     {
+        $id = null;
         if (isset($_COOKIE['_kdt'])) {
             $cookie = json_decode($_COOKIE['_kdt'], true);
             $id = $cookie['i'];
