@@ -1,7 +1,7 @@
 {
   "name": "konduto/magento2",
   "description": "Konduto Anti Fraud Module",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "magento2-module",
   "license": "proprietary",
   "authors": [

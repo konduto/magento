@@ -168,8 +168,9 @@ class KondutoService extends AbstractModel
      * Method to update order with payment status.
      * @param $orderId
      * @param $newStatus
-     * @return array
+     * @return bool
      * @throws KondutoException
+     * @throws \Exception
      */
     public function updateOrderStatus($orderId, $newStatus)
     {
@@ -181,7 +182,7 @@ class KondutoService extends AbstractModel
             $this->helper->apiKeyIsValid();
             $kondutoResponse = Konduto::updateOrderStatus($orderId, $newStatus, '');
         } catch (\Exception $exception) {
-            throw $exception;
+            throw new \Exception($exception);
         }
 
         return $kondutoResponse;
@@ -197,6 +198,7 @@ class KondutoService extends AbstractModel
         $isValidSignature = $this->helper->validateSignature($params);
 
         if ($isValidSignature) {
+            $params['status'] = strtolower($params['status']);
             $kondutoResponse = $this->updateOrderStatus($params['order_id'], $params['status']);
         }
 

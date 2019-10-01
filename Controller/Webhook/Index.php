@@ -51,8 +51,16 @@ class Index extends Action
         $success = false;
 
         try {
-            $getParams = $this->file->fileGetContents('php://input');
-            $params = json_decode(utf8_encode($getParams), true);
+            $postParams = $this->file->fileGetContents('php://input');
+            $params = json_decode(utf8_encode($postParams), true);
+
+            if (!array_key_exists('order_id', $params) && !array_key_exists('status', $params)) {
+                return $this->isNotSuccess();
+            }
+
+            if (!array_key_exists('timestamp', $params) && !array_key_exists('signature', $params)) {
+                return $this->isNotSuccess();
+            }
 
             if ($params) {
                 $success = $this->kondutoService->updateOrder($params);
@@ -64,6 +72,7 @@ class Index extends Action
 
             return $this->isSuccess();
         } catch (\Exception $e) {
+            $this->getResponse()->setHttpResponseCode(400);
             return $this->getResponse()->setBody(json_encode($e->getMessage()));
         }
     }
