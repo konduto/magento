@@ -2,7 +2,6 @@
 
 namespace Konduto\Antifraud\Model\Konduto;
 
-use Konduto\Core\Konduto;
 use Konduto\Models\Address;
 
 /**
@@ -17,11 +16,6 @@ class BillingData extends AbstractData
     private $billing;
     public $address;
 
-    public function __construct(Address $address)
-    {
-        $this->address = $address;
-    }
-
     /**
      * @param $billing
      * @return Address
@@ -29,7 +23,7 @@ class BillingData extends AbstractData
     public function getBillingData($billing)
     {
         $this->billing = $billing;
-        $this->address = new Address;
+        $this->address = new Address();
         $this->address->setName($billing->getFirstName());
         $this->address->setAddress1($this->getAddressOne());
         if ($this->getAddressTwo()) {
@@ -48,7 +42,7 @@ class BillingData extends AbstractData
      */
     private function getAddressOne()
     {
-        return (string) $this->getStreet($this->billing) . $this->getNumber($this->billing);
+        return (string) $this->getStreet() . $this->getNumber();
     }
 
     /**
@@ -56,7 +50,7 @@ class BillingData extends AbstractData
      */
     private function getAddressTwo()
     {
-        return (string) $this->getComplement($this->billing) . $this->getNeighborhood($this->billing);
+        return (string) $this->getComplement() . $this->getNeighborhood();
     }
 
     /**
