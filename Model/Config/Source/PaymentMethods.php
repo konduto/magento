@@ -14,7 +14,7 @@ class PaymentMethods implements ArrayInterface
     /**
      * @var Data
      */
-    public $helper;
+    protected $helper;
 
     /**
      * PaymentMethods constructor.

@@ -14,7 +14,7 @@ class CustomerAttribute implements ArrayInterface
     /**
      * @var CollectionFactory
      */
-    public $attributeCollection;
+    protected $attributeCollection;
 
     /**
      * CustomerAttribute constructor.

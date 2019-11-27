@@ -2,17 +2,17 @@
 
 namespace Konduto\Antifraud\Helper;
 
-use Konduto\Antifraud\Logger\Logger;
-use Konduto\Core\Konduto;
-use Konduto\Exceptions\KondutoException;
-use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Stdlib\DateTime;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory;
 use Magento\Sales\Model\ResourceModel\Order\Payment\Transaction\CollectionFactory;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\Stdlib\DateTime;
+use Konduto\Exceptions\KondutoException;
+use Konduto\Core\Konduto;
+use Konduto\Antifraud\Logger\Logger;
 
 /**
  * Class Data
@@ -74,10 +74,10 @@ class Data
 
     public $transactionSearchResultInterfaceFactory;
     public $collectionFactory;
-    public $customerRepositoryInterface;
-    public $orderRepository;
-    public $scopeConfig;
-    public $timezone;
+    protected $customerRepositoryInterface;
+    protected $orderRepository;
+    protected $scopeConfig;
+    protected $timezone;
     public $logger;
 
     /**
@@ -125,7 +125,7 @@ class Data
     public function getPrivateKey()
     {
         $environment = $this->getEnvironment();
-        return $this->scopeConfig->getValue('konduto_antifraud/settings/' . $environment . '_private_key');
+        return $this->scopeConfig->getValue('konduto_antifraud/settings/'. $environment .'_private_key');
     }
 
     /**
@@ -134,7 +134,8 @@ class Data
     public function getMassOrderQuantity()
     {
         $qty = 1;
-        $configQty = $this->scopeConfig->getValue(self::MASS_ORDER_QTY_PATH, ScopeInterface::SCOPE_STORE);
+        $configQty = $this->scopeConfig->getValue(
+            self::MASS_ORDER_QTY_PATH, ScopeInterface::SCOPE_STORE);
 
         if ($configQty) {
             if ($configQty > $qty) {
@@ -215,10 +216,10 @@ class Data
     public function getFilterParams()
     {
         $params = $this->scopeConfig
-            ->getValue(
-                self::PAYMENTS_PATH,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            );
+                ->getValue(
+                    self::PAYMENTS_PATH,
+                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+                );
 
         $params = explode(",", $params);
         return (array) $params;
@@ -285,7 +286,12 @@ class Data
      */
     public function getNowDateTime()
     {
-        $now = $this->timezone->date($date)->format(DateTime::DATETIME_PHP_FORMAT);
+        $currentDateTimeUTC = (new \DateTime())->format(DateTime::DATETIME_PHP_FORMAT);
+        $localizedDateTimeISO = $this->timezone->date(
+            new \DateTime($currentDateTimeUTC))->format(
+            DateTime::DATETIME_PHP_FORMAT);
+
+        $now = str_replace(' ', 'T', $localizedDateTimeISO);
         return $now;
     }
 
@@ -341,14 +347,14 @@ class Data
     /**
      * @return array
      */
-    public function initPaymentMapping()
+    protected function initPaymentMapping()
     {
         return array(
             'Cartao Credito' => $this->formatPaymentDefaults(self::PAYMENT_CREDIT_ATTRIBUTE),
-            'Cartao Debito' => $this->formatPaymentDefaults(self::PAYMENT_DEBIT_ATTRIBUTE),
+            'Cartao Debito'	=> $this->formatPaymentDefaults(self::PAYMENT_DEBIT_ATTRIBUTE),
             'Boleto' => $this->formatPaymentDefaults(self::PAYMENT_BOLETO_ATTRIBUTE),
-            'Transferencia' => $this->formatPaymentDefaults(self::PAYMENT_TRANSFER_ATTRIBUTE),
-            'Voucher'   => $this->formatPaymentDefaults(self::PAYMENT_VOUCHER_ATTRIBUTE)
+            'Transferencia'	=> $this->formatPaymentDefaults(self::PAYMENT_TRANSFER_ATTRIBUTE),
+            'Voucher'	=> $this->formatPaymentDefaults(self::PAYMENT_VOUCHER_ATTRIBUTE)
         );
     }
 
@@ -356,7 +362,7 @@ class Data
      * @param $defaults
      * @return array
      */
-    public function formatPaymentDefaults($defaults)
+    protected function formatPaymentDefaults($defaults)
     {
         $payments[] = $this->scopeConfig->getValue(
             $defaults,
@@ -370,7 +376,7 @@ class Data
      * @param $message
      * @param array $context
      */
-    public function log($message, $level, array $context = [])
+    public function log($message, $level, array $context = [] )
     {
         if (!$this->scopeConfig->getValue(self::DEBUG_PATH, ScopeInterface::SCOPE_STORE)) {
             return;

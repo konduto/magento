@@ -1,10 +1,11 @@
 <?php
 
+
 namespace Konduto\Antifraud\Cron;
 
 class CreateOrders
 {
-    public $queueManager;
+    protected $queueManager;
 
     /**
      * CreateOrders constructor.

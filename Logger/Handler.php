@@ -10,11 +10,11 @@ class Handler extends Base
      * Logging level
      * @var int
      */
-    public $loggerType = Logger::INFO;
+    protected $loggerType = Logger::INFO;
 
     /**
      * File name
      * @var string
      */
-    public $fileName = '/var/log/konduto.log';
+    protected $fileName = '/var/log/konduto.log';
 }

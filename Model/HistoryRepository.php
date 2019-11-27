@@ -21,15 +21,15 @@ class HistoryRepository implements HistoryRepositoryInterface
     /**
      * @var HistoryResource
      */
-    public $resource;
+    protected $resource;
     /**
      * @var HistoryCollectionFactory
      */
-    public $collection;
+    protected $collection;
     /**
      * @var \Konduto\Antifraud\Model\HistoryFactory
      */
-    public $historyFactory;
+    protected $historyFactory;
 
     /**
      * HistoryRepository constructor.

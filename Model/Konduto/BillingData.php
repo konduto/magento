@@ -2,6 +2,7 @@
 
 namespace Konduto\Antifraud\Model\Konduto;
 
+use Konduto\Core\Konduto;
 use Konduto\Models\Address;
 
 /**
@@ -14,7 +15,6 @@ class BillingData extends AbstractData
      * @var object
      */
     private $billing;
-    public $address;
 
     /**
      * @param $billing
@@ -23,18 +23,18 @@ class BillingData extends AbstractData
     public function getBillingData($billing)
     {
         $this->billing = $billing;
-        $this->address = new Address();
-        $this->address->setName($billing->getFirstName());
-        $this->address->setAddress1($this->getAddressOne());
+        $billingKonduto = new Address;
+        $billingKonduto->setName($billing->getFirstName());
+        $billingKonduto->setAddress1($this->getAddressOne());
         if ($this->getAddressTwo()) {
-            $this->address->setAddress2($this->getAddressTwo());
+            $billingKonduto->setAddress2($this->getAddressTwo());
         }
-        $this->address->setCity($this->getCity());
-        $this->address->setState($this->getState());
-        $this->address->setZip($this->getZipCode());
-        $this->address->setCountry($this->getCountry());
+        $billingKonduto->setCity($this->getCity());
+        $billingKonduto->setState($this->getState());
+        $billingKonduto->setZip($this->getZipCode());
+        $billingKonduto->setCountry($this->getCountry());
 
-        return $this->address;
+        return $billingKonduto;
     }
 
     /**
@@ -42,7 +42,7 @@ class BillingData extends AbstractData
      */
     private function getAddressOne()
     {
-        return (string) $this->getStreet() . $this->getNumber();
+        return (string) $this->getStreet($this->billing) . $this->getNumber($this->billing);
     }
 
     /**
@@ -50,7 +50,7 @@ class BillingData extends AbstractData
      */
     private function getAddressTwo()
     {
-        return (string) $this->getComplement() . $this->getNeighborhood();
+        return (string) $this->getComplement($this->billing) . $this->getNeighborhood($this->billing);
     }
 
     /**
