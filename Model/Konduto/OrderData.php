@@ -72,7 +72,9 @@ class OrderData extends AbstractData
         $orderKonduto->setTotalAmount((float) $this->treatCents($order->getGrandTotal()));
         $orderKonduto->setShippingAmount((float) $this->treatCents($order->getShippingAmount()));
         $orderKonduto->setCurrency($order->getBaseCurrencyCode());
-        $orderKonduto->setIp($order->getRemoteIp());
+        if(strlen($order->getRemoteIp()) <= 15) {
+            $orderKonduto->setIp($order->getRemoteIp());
+        }
         $orderKonduto->setCustomer($this->customerData->getCustomerData($order));
         $orderKonduto->setPayment($this->paymentData->getPaymentData($order));
         $orderKonduto->setBilling($this->billingData->getBillingData($order->getBillingAddress()));
