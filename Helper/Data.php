@@ -500,6 +500,9 @@ class Data
         return $this->collectionFactory->create()->addOrderIdFilter($orderId)->getItems();
     }
 
+    /**
+     * @param $number
+     */
     public function treatCents($number)
     {
         return number_format($number, 2, '.', '');
