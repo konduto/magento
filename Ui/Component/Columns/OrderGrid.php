@@ -45,7 +45,7 @@ class OrderGrid extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $item[$this->getData('name')] =
-                    $this->getAttributeValue($item['increment_id'], $this->getData('attributeCode'));
+                    $this->getAttributeValue($item['entity_id'], $this->getData('attributeCode'));
             }
         }
         return $dataSource;
