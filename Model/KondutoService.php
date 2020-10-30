@@ -2,6 +2,7 @@
 
 namespace Konduto\Antifraud\Model;
 
+use Exception;
 use Konduto\Antifraud\Helper\Data;
 use Konduto\Antifraud\Model\Konduto\OrderData;
 use Konduto\Antifraud\Model\ResourceModel\Queue\CollectionFactory;
@@ -15,6 +16,7 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\ResourceModel\Attribute as OrderAttributeResource;
 use Magento\Sales\Model\Service\InvoiceService;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class KondutoService
@@ -190,17 +192,13 @@ class KondutoService extends AbstractModel
     /**
      * @param $params
      * @return bool
-     * @throws KondutoException
+     * @throws KondutoException|LocalizedException
+     * @throws Exception
      */
     public function updateOrder($params)
     {
         $isValidSignature = $this->helper->validateSignature($params);
-
-        if ($isValidSignature) {
-            $kondutoResponse = $this->updateOrderStatus($params['order_id'], $params['status']);
-        }
-
-        if (!isset($kondutoResponse) || $kondutoResponse === false) {
+        if (!$isValidSignature) {
             return false;
         }
 
