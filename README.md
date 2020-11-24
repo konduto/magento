@@ -27,6 +27,8 @@ It is possible to install the Konduto module for Magento 2 via [.zip](https://gi
 > `bin/magento setup:upgrade`
 - The ​**Konduto_Antifraud**​​ module should be displayed in the list of Magento modules
 > `bin/magento module:status`
+- Go to the Magento root directory and add the module:
+> `composer require konduto/sdk:v2.0.1`
 
 #### Via [.zip](https://github.com/konduto/magento2/archive/master.zip)
 - Create the following folder (s) inside the Magento ​app​​ folder
@@ -38,6 +40,8 @@ It is possible to install the Konduto module for Magento 2 via [.zip](https://gi
 > `bin/magento setup:upgrade`
 - The **Konduto_Antifraud** module should be displayed in the list of Magento modules
 > `bin/magento module:status`
+- Go to the Magento root directory and add the module:
+> `composer require konduto/sdk:v2.0.1`
 
 # Configuration
 1. Setting up your Konduto account
