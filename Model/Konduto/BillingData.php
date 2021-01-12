@@ -24,7 +24,9 @@ class BillingData extends AbstractData
     {
         $this->billing = $billing;
         $billingKonduto = new Address;
-        $billingKonduto->setName($billing->getFirstName());
+        $billingKonduto->setName(
+            $billing->getFirstName() . ' ' . $billing->getLastName()
+        );
         $billingKonduto->setAddress1($this->getAddressOne());
         if ($this->getAddressTwo()) {
             $billingKonduto->setAddress2($this->getAddressTwo());

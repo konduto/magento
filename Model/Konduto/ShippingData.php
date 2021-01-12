@@ -13,7 +13,9 @@ class ShippingData extends AbstractData
     {
         $this->shipping = $shipping;
         $shippingKonduto = new Address;
-        $shippingKonduto->setName($shipping->getFirstName());
+        $shippingKonduto->setName(
+            $shipping->getFirstName() . ' ' . $shipping->getLastName()
+        );
         $shippingKonduto->setAddress1($this->getAddressOne());
         if ($this->getAddressTwo()) {
             $shippingKonduto->setAddress2($this->getAddressTwo());

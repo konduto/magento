@@ -17,18 +17,25 @@ class CustomerData extends AbstractData
         if ($order->getCustomerIsGuest()) {
             $customerKonduto = new Customer;
             $customerKonduto->setId($order->getCustomerEmail());
-            $customerKonduto->setName($order->getBillingAddress()->getFirstName());
+            $customerKonduto->setName(
+                $order->getBillingAddress()->getFirstName() . ' ' . $order->getBillingAddress()->getLastname()
+            );
             $customerKonduto->setEmail($order->getCustomerEmail());
             return $customerKonduto;
         }
         $this->customer = $this->helper->getCustomer($order->getCustomerId());
         $customerKonduto = new Customer;
         $customerKonduto->setId($this->getKondutoIdentifier());
-        $customerKonduto->setName($this->getName($this->customer->getFirstname()));
+        $customerKonduto->setName($this->getName($this->customer->getFirstname() . ' ' . $this->customer->getLastname()));
         $customerKonduto->setEmail($this->customer->getEmail());
         $customerKonduto->setDob($this->customer->getDob());
         $customerKonduto->setTaxId($this->helper->getDocumentNumber($this->customer));
         $customerKonduto->setCreatedAt($this->getCreatedAt($this->customer));
+
+        if ($order->getBillingAddress()->getTelephone()) {
+            $customerKonduto->setPhone1($order->getBillingAddress()->getTelephone());
+        }
+
         return (object) $customerKonduto;
     }
 
