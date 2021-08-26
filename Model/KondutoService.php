@@ -207,7 +207,7 @@ class KondutoService extends AbstractModel
             return false;
         }
         $this->updateHistory($order->getId(), $params['status']);
-        $order->setKondutoStatus($params['status']);
+        // $order->setKondutoStatus($params['status']);
         if ($this->helper->getAutomaticKondutoUpdate()) {
             $order->setStatus($this->helper->getStatusCode($params['status']));
             if ($params['status'] = 'approved') {
