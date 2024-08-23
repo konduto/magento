@@ -2,7 +2,6 @@
 
 namespace Konduto\Antifraud\Model;
 
-use Exception;
 use Konduto\Antifraud\Helper\Data;
 use Konduto\Antifraud\Model\Konduto\OrderData;
 use Konduto\Antifraud\Model\ResourceModel\Queue\CollectionFactory;
@@ -16,7 +15,6 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\ResourceModel\Attribute as OrderAttributeResource;
 use Magento\Sales\Model\Service\InvoiceService;
-use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class KondutoService
@@ -24,6 +22,8 @@ use Magento\Framework\Exception\LocalizedException;
  */
 class KondutoService extends AbstractModel
 {
+    const KONDUTO_APPROVED = 'approved';
+
     /**
      * It is used if there is a problem with communication with Konduto
      */
@@ -192,8 +192,7 @@ class KondutoService extends AbstractModel
     /**
      * @param $params
      * @return bool
-     * @throws KondutoException|LocalizedException
-     * @throws Exception
+     * @throws KondutoException
      */
     public function updateOrder($params)
     {
@@ -207,10 +206,12 @@ class KondutoService extends AbstractModel
             return false;
         }
         $this->updateHistory($order->getId(), $params['status']);
-        // $order->setKondutoStatus($params['status']);
+        $order->setKondutoStatus($params['status']);
         if ($this->helper->getAutomaticKondutoUpdate()) {
-            $order->setStatus($this->helper->getStatusCode($params['status']));
-            if ($params['status'] = 'approved') {
+            $order->setStatus(
+                $this->helper->getStatusCode(strtolower($params['status']))
+            );
+            if (strtolower($params['status']) == self::KONDUTO_APPROVED) {
                 $this->createInvoice($order);
             }
         }
