@@ -63,3 +63,21 @@ bin/magento cache:flush
 curl -s https://repo.packagist.org/p2/equifax-bvs/konduto-magento2.json | python3 -m json.tool | grep '"version"'
 ```
 
+## Remoção / descontinuação do pacote
+
+Como mantenedor, na página do pacote no Packagist:
+
+- **Delete** (*Edit → Delete*): remove o pacote por completo.
+  - Lojas com `composer.lock` existente continuam instalando (download vem do GitHub),
+    mas `composer update`/`require` passam a falhar.
+  - O nome excluído fica **bloqueado** no Packagist (nenhuma outra conta pode
+    registrá-lo — proteção contra supply-chain attack).
+  - Usar apenas se ninguém depende do pacote.
+- **Abandon** (*Edit → Abandon*): marca como abandonado, opcionalmente indicando
+  um pacote substituto.
+  - O pacote continua instalável; o Composer exibe aviso de descontinuação.
+  - Opção recomendada quando já existem lojas usando.
+- **Congelar**: simplesmente não publicar novas tags — o pacote permanece
+  disponível na última versão.
+
+
