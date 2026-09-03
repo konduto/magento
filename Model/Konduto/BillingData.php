@@ -44,7 +44,11 @@ class BillingData extends AbstractData
      */
     private function getAddressOne()
     {
-        return (string) $this->getStreet($this->billing) . $this->getNumber($this->billing);
+        $parts = array_filter(array(
+            trim((string) $this->getStreet($this->billing)),
+            trim((string) $this->getNumber($this->billing))
+        ));
+        return implode(', ', $parts);
     }
 
     /**
@@ -52,7 +56,11 @@ class BillingData extends AbstractData
      */
     private function getAddressTwo()
     {
-        return (string) $this->getComplement($this->billing) . $this->getNeighborhood($this->billing);
+        $parts = array_filter(array(
+            trim((string) $this->getComplement($this->billing)),
+            trim((string) $this->getNeighborhood($this->billing))
+        ));
+        return implode(' - ', $parts);
     }
 
     /**
@@ -132,6 +140,6 @@ class BillingData extends AbstractData
      */
     private function traitZipCode($zipcode)
     {
-        return preg_replace('/[^0-9]+/', '', $zipcode);
+        return preg_replace('/[^0-9]+/', '', (string) $zipcode);
     }
 }

@@ -505,11 +505,11 @@ class Data
      */
     public function treatCents($number)
     {
-        return number_format($number, 2, '.', '');
+        return number_format((float) $number, 2, '.', '');
     }
 
     public function traitDocument($document)
     {
-        return preg_replace('/[^0-9]+/', '', $document);
+        return preg_replace('/[^0-9]+/', '', (string) $document);
     }
 }

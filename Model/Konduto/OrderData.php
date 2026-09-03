@@ -74,7 +74,7 @@ class OrderData extends AbstractData
         if ($order->getTaxAmount() > 0) {
             $orderKonduto->setTaxAmount((float) $this->treatCents($order->getTaxAmount()));
         }
-        $orderKonduto->setCurrency($order->getBaseCurrencyCode());
+        $orderKonduto->setCurrency($order->getOrderCurrencyCode() ?: $order->getBaseCurrencyCode());
         $orderKonduto->setInstallments($this->getInstallments($order));
         if ($order->getCreatedAt()) {
             $orderKonduto->setPurchasedAt($this->getPurchasedAt($order));
@@ -84,7 +84,10 @@ class OrderData extends AbstractData
             $orderKonduto->setIp($ip);
         }
         $orderKonduto->setCustomer($this->customerData->getCustomerData($order));
-        $orderKonduto->setPayment($this->paymentData->getPaymentData($order));
+        $payment = $this->paymentData->getPaymentData($order);
+        if (!empty($payment)) {
+            $orderKonduto->setPayment($payment);
+        }
         $orderKonduto->setBilling($this->billingData->getBillingData($order->getBillingAddress()));
         if ($order->getShippingAddress()) {
             $orderKonduto->setShipping($this->shippingData->getShippingData($order->getShippingAddress()));
@@ -96,7 +99,7 @@ class OrderData extends AbstractData
 
     public function treatCents($number)
     {
-        return number_format($number, 2, '.', '');
+        return number_format((float) $number, 2, '.', '');
     }
 
     /**
@@ -126,7 +129,8 @@ class OrderData extends AbstractData
      */
     public function getPurchasedAt($order)
     {
-        return date('Y-m-d\TH:i:s\Z', strtotime($order->getCreatedAt()));
+        // Magento stores created_at in UTC; keep UTC to match the trailing "Z"
+        return gmdate('Y-m-d\TH:i:s\Z', strtotime($order->getCreatedAt()));
     }
 
     /**

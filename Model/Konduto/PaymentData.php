@@ -18,9 +18,16 @@ class PaymentData extends AbstractData
 
     public function getSimplePayment()
     {
+        $type = $this->getMethod($this->payment);
+        if (!$type) {
+            // Unmapped payment method: omit the optional payment list
+            // instead of sending an invalid "type" value.
+            return array();
+        }
+
         $data = array(
             array(
-                "type" => $this->getMethod($this->payment),
+                "type" => $type,
                 "amount" => (float) $this->helper->treatCents($this->order->getGrandTotal())
             )
         );

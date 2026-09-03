@@ -30,12 +30,20 @@ class ShippingData extends AbstractData
 
     private function getAddressOne()
     {
-        return (string) $this->getStreet($this->shipping) . $this->getNumber($this->shipping);
+        $parts = array_filter(array(
+            trim((string) $this->getStreet($this->shipping)),
+            trim((string) $this->getNumber($this->shipping))
+        ));
+        return implode(', ', $parts);
     }
 
     private function getAddressTwo()
     {
-        return (string) $this->getComplement($this->shipping) . $this->getNeighborhood($this->shipping);
+        $parts = array_filter(array(
+            trim((string) $this->getComplement($this->shipping)),
+            trim((string) $this->getNeighborhood($this->shipping))
+        ));
+        return implode(' - ', $parts);
     }
 
     private function getStreet()
@@ -87,6 +95,6 @@ class ShippingData extends AbstractData
 
     private function traitZipCode($zipcode)
     {
-        return preg_replace('/[^0-9]+/', '', $zipcode);
+        return preg_replace('/[^0-9]+/', '', (string) $zipcode);
     }
 }

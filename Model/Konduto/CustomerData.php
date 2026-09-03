@@ -39,8 +39,13 @@ class CustomerData extends AbstractData
         $customerKonduto->setId($this->getKondutoIdentifier());
         $customerKonduto->setName($this->getName($this->customer->getFirstname() . ' ' . $this->customer->getLastname()));
         $customerKonduto->setEmail($this->customer->getEmail());
-        $customerKonduto->setDob($this->customer->getDob());
-        $customerKonduto->setTaxId($this->helper->getDocumentNumber($this->customer));
+        if ($this->customer->getDob()) {
+            $customerKonduto->setDob($this->helper->getDate($this->customer->getDob()));
+        }
+        $taxId = $this->helper->getDocumentNumber($this->customer);
+        if ($taxId) {
+            $customerKonduto->setTaxId($taxId);
+        }
         $customerKonduto->setCreatedAt($this->getCreatedAt($this->customer));
 
         if ($order->getBillingAddress()->getTelephone()) {

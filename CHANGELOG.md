@@ -21,6 +21,16 @@ Revisão dos campos do payload conforme a documentação oficial
 ### Corrigido
 - **Bug crítico**: pedidos com 2 ou mais transações de pagamento eram enviados com
   `payment` nulo (payload inválido).
+- `currency` agora usa a moeda do pedido (`order_currency_code`) — antes enviava a
+  moeda base da loja com valores na moeda do pedido (inconsistente em multi-moeda).
+- `purchased_at` gerado em UTC (`gmdate`) para coincidir com o sufixo `Z` do formato
+  ISO 8601 (o Magento grava `created_at` em UTC).
+- Lista `payment` é omitida quando o método de pagamento não está mapeado na
+  configuração — antes era enviado `"type": false` (valor inválido pela doc).
+- `customer.dob` formatado como `YYYY-MM-DD` (doc ISO 8601) — antes era enviado no
+  formato bruto do Magento (`Y-m-d H:i:s`); `dob`/`tax_id` omitidos quando vazios.
+- `address1`/`address2` com separadores legíveis (`Rua X, 123` / `Apto 1 - Centro`) —
+  antes rua e número eram concatenados sem separador (`Rua X123`).
 - `expiration_date` agora respeita o formato `MMAAAA` com zero à esquerda
   (antes meses de 1 dígito geravam ex.: `72025`).
 - `unit_cost` dos itens formatado com 2 casas decimais.
@@ -33,6 +43,8 @@ Revisão dos campos do payload conforme a documentação oficial
 - `PaymentData::getCcStatus()` usava variável não inicializada quando não havia transações.
 - `PlaceAfterPlugin`: propriedade `$queueManager` declarada (dynamic properties são
   deprecated no PHP 8.2+) e leitura defensiva do cookie `_kdt`.
+- Null-safety em `preg_replace`/`number_format`/`strtotime` (CEP, documento, valores
+  e datas nulos causariam deprecation no PHP 8.1+).
 
 ### Alterado
 - `setup_version` do módulo atualizado para `1.1.0`.
