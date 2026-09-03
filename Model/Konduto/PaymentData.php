@@ -13,24 +13,30 @@ class PaymentData extends AbstractData
         $this->payment = $this->order->getPayment();
         $this->transactions = $this->helper->getTransactions($this->order->getId());
 
-        if (sizeof($this->transactions) < 2) {
-            return $this->getSimplePayment();
-        }
+        return $this->getSimplePayment();
     }
 
     public function getSimplePayment()
     {
         $data = array(
             array(
-                "type" => $this->getMethod($this->payment)
+                "type" => $this->getMethod($this->payment),
+                "amount" => (float) $this->helper->treatCents($this->order->getGrandTotal())
             )
         );
 
-        if ($this->method === "credit") {
-            $data[0]['expiration_date'] = $this->getCcExpDate($this->payment);
+        if ($this->method === "credit" || $this->method === "debit") {
+            $expirationDate = $this->getCcExpDate($this->payment);
+            if ($expirationDate) {
+                $data[0]['expiration_date'] = $expirationDate;
+            }
             $data[0]['status'] = $this->getCcStatus($this->order);
             if ($this->payment->getCcLast4()) {
                 $data[0]['last4'] = $this->payment->getCcLast4();
+            }
+            $bin = $this->getCcBin($this->payment);
+            if ($bin) {
+                $data[0]['bin'] = $bin;
             }
         }
 
@@ -48,6 +54,7 @@ class PaymentData extends AbstractData
 
     private function getCcStatus($order)
     {
+        $paymentSituation = null;
         foreach ($this->transactions as $transaction) {
             $paymentSituation = $transaction['transactionType'];
         }
@@ -59,8 +66,34 @@ class PaymentData extends AbstractData
         return 'pending';
     }
 
+    /**
+     * Card expiration date in MMYYYY format (Konduto spec).
+     *
+     * @param \Magento\Sales\Api\Data\OrderPaymentInterface $payment
+     * @return string|false
+     */
     private function getCcExpDate($payment)
     {
-        return (string) $payment->getCcExpMonth() . $payment->getCcExpYear();
+        if (!$payment->getCcExpMonth() || !$payment->getCcExpYear()) {
+            return false;
+        }
+        return str_pad((string) $payment->getCcExpMonth(), 2, '0', STR_PAD_LEFT)
+            . (string) $payment->getCcExpYear();
+    }
+
+    /**
+     * First six digits of the card (BIN), when available.
+     *
+     * @param \Magento\Sales\Api\Data\OrderPaymentInterface $payment
+     * @return string|false
+     */
+    private function getCcBin($payment)
+    {
+        $bin = $payment->getAdditionalInformation('cc_bin')
+            ?: $payment->getAdditionalInformation('bin');
+        if (!$bin && $payment->getCcNumberEnc() === null && $payment->getData('cc_number')) {
+            $bin = substr(preg_replace('/[^0-9]+/', '', $payment->getData('cc_number')), 0, 6);
+        }
+        return $bin ?: false;
     }
 }

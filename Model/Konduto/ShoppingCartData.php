@@ -8,14 +8,17 @@ class ShoppingCartData
     {
         $itemsArray = array();
 
-        foreach ($order->getAllItems() as $item) {
-            $item = array(
+        foreach ($order->getAllVisibleItems() as $item) {
+            $itemData = array(
                 "sku" => (string) $item->getSku(),
                 "name" => (string) $item->getName(),
-                "unit_cost" => (float) $item->getPrice(),
+                "unit_cost" => (float) number_format((float) $item->getPrice(), 2, '.', ''),
                 "quantity" => (integer) $item->getQtyOrdered()
             );
-            array_push($itemsArray, $item);
+            if ((float) $item->getDiscountAmount() > 0) {
+                $itemData['discount'] = (float) number_format((float) $item->getDiscountAmount(), 2, '.', '');
+            }
+            array_push($itemsArray, $itemData);
         }
         return $itemsArray;
     }

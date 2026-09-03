@@ -1,20 +1,25 @@
 {
-  "name": "konduto/magento2",
-  "description": "Konduto Anti Fraud Module",
-  "version": "1.0.7",
+  "name": "equifax-bvs/konduto-magento2",
+  "description": "Konduto Anti Fraud Module for Magento 2",
+  "version": "1.1.0",
   "type": "magento2-module",
   "license": "proprietary",
   "authors": [
     {
-      "name": "Trezo",
-      "email": "contato@trezo.com.br"
-    },
-    {
-      "name": "Cristhian Silveira Silva",
-      "email": "cristhian@trezo.com.br"
+      "name": "Danilo",
+      "email": "danilo.carmo@equifax.com"
     }
   ],
+  "keywords": [
+    "konduto",
+    "antifraud",
+    "magento2",
+    "fraud-prevention"
+  ],
   "minimum-stability": "stable",
+  "replace": {
+    "konduto/magento2": "self.version"
+  },
   "require": {
     "php": "^7.0||^8.0",
     "konduto/sdk": "v2.0.1"

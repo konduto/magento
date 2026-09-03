@@ -11,6 +11,10 @@ use Magento\Sales\Api\OrderManagementInterface;
  */
 class PlaceAfterPlugin
 {
+    /**
+     * @var QueueManager
+     */
+    private $queueManager;
 
     /**
      * PlaceAfterPlugin constructor.
@@ -45,7 +49,9 @@ class PlaceAfterPlugin
         $id = null;
         if (isset($_COOKIE['_kdt'])) {
             $cookie = json_decode($_COOKIE['_kdt'], true);
-            $id = $cookie['i'];
+            if (is_array($cookie) && isset($cookie['i'])) {
+                $id = $cookie['i'];
+            }
         }
         return $id;
     }

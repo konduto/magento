@@ -21,6 +21,17 @@ class CustomerData extends AbstractData
                 $order->getBillingAddress()->getFirstName() . ' ' . $order->getBillingAddress()->getLastname()
             );
             $customerKonduto->setEmail($order->getCustomerEmail());
+            $customerKonduto->setNew(true);
+            if ($order->getBillingAddress()->getTelephone()) {
+                $customerKonduto->setPhone1($order->getBillingAddress()->getTelephone());
+            }
+            $taxId = $this->getGuestTaxId($order);
+            if ($taxId) {
+                $customerKonduto->setTaxId($taxId);
+            }
+            if ($order->getCustomerDob()) {
+                $customerKonduto->setDob($this->helper->getDate($order->getCustomerDob()));
+            }
             return $customerKonduto;
         }
         $this->customer = $this->helper->getCustomer($order->getCustomerId());
@@ -77,5 +88,21 @@ class CustomerData extends AbstractData
     public function getCreatedAt($customer)
     {
         return $this->helper->getDate($customer->getCreatedAt());
+    }
+
+    /**
+     * Tax document (CPF/CNPJ) for guest checkouts, from order/billing VAT fields.
+     *
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @return string|false
+     */
+    public function getGuestTaxId($order)
+    {
+        $document = $order->getCustomerTaxvat()
+            ?: $order->getBillingAddress()->getVatId();
+        if (!$document) {
+            return false;
+        }
+        return $this->helper->traitDocument($document);
     }
 }

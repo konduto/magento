@@ -194,7 +194,7 @@ class Data
         $privateKey = $this->getPrivateKey();
 
         if (!$privateKey) {
-            $this->helper->log('The API private key was not filled', 'notice');
+            $this->log('The API private key was not filled', 'notice');
             return false;
         }
 
@@ -442,13 +442,13 @@ class Data
     public function getDocumentNumber($customer)
     {
         $field = $this->getCpfCnpjAttribute();
-        $document = $customer->getCustomAttribute($field);
+        $document = $field ? $customer->getCustomAttribute($field) : null;
 
-        if (!$document) {
+        if (!$document || !$document->getValue()) {
             return $this->traitDocument($customer->getTaxvat());
         }
 
-        return $this->traitDocument($document);
+        return $this->traitDocument($document->getValue());
     }
 
     /**
