@@ -26,7 +26,12 @@ Revisão dos campos do payload conforme a documentação oficial
 - `purchased_at` gerado em UTC (`gmdate`) para coincidir com o sufixo `Z` do formato
   ISO 8601 (o Magento grava `created_at` em UTC).
 - Lista `payment` é omitida quando o método de pagamento não está mapeado na
-  configuração — antes era enviado `"type": false` (valor inválido pela doc).
+  configuração — antes era enviado `"type": false` (valor inválido pela doc e que
+  causaria `InvalidArgumentException` no SDK).
+- Serialização da lista `payment`: os itens agora são construídos como modelos do
+  SDK (`Payment::build`) com `addField` — o `BaseModel::toJsonArray()` do SDK
+  descarta campos fora de `fields()`, o que silenciosamente removia `amount`
+  (credit) e `bin`/`last4`/`expiration_date` (debit) do payload.
 - `customer.dob` formatado como `YYYY-MM-DD` (doc ISO 8601) — antes era enviado no
   formato bruto do Magento (`Y-m-d H:i:s`); `dob`/`tax_id` omitidos quando vazios.
 - `address1`/`address2` com separadores legíveis (`Rua X, 123` / `Apto 1 - Centro`) —

@@ -2,11 +2,19 @@
 
 namespace Konduto\Antifraud\Model\Konduto;
 
+use Konduto\Models\Payment;
+
 class PaymentData extends AbstractData
 {
     private $method;
     private $order;
 
+    /**
+     * Builds the Konduto "payment" list (array of payment objects, per API doc).
+     *
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @return Payment[] list of SDK payment models (empty when method is unmapped)
+     */
     public function getPaymentData($order)
     {
         $this->order = $order;
@@ -26,28 +34,44 @@ class PaymentData extends AbstractData
         }
 
         $data = array(
-            array(
-                "type" => $type,
-                "amount" => (float) $this->helper->treatCents($this->order->getGrandTotal())
-            )
+            "type" => $type,
+            "amount" => (float) $this->helper->treatCents($this->order->getGrandTotal())
         );
 
         if ($this->method === "credit" || $this->method === "debit") {
             $expirationDate = $this->getCcExpDate($this->payment);
             if ($expirationDate) {
-                $data[0]['expiration_date'] = $expirationDate;
+                $data['expiration_date'] = $expirationDate;
             }
-            $data[0]['status'] = $this->getCcStatus($this->order);
+            $data['status'] = $this->getCcStatus($this->order);
             if ($this->payment->getCcLast4()) {
-                $data[0]['last4'] = $this->payment->getCcLast4();
+                $data['last4'] = $this->payment->getCcLast4();
             }
             $bin = $this->getCcBin($this->payment);
             if ($bin) {
-                $data[0]['bin'] = $bin;
+                $data['bin'] = $bin;
             }
         }
 
-        return $data;
+        // Return a LIST of payment objects, as required by the Konduto API.
+        return array($this->buildPaymentModel($data));
+    }
+
+    /**
+     * Builds the SDK payment model, registering every field via addField so
+     * values like "amount" (and card data on debit) survive serialization —
+     * BaseModel::toJsonArray() drops any field not declared in fields().
+     *
+     * @param array $data
+     * @return Payment
+     */
+    private function buildPaymentModel(array $data)
+    {
+        $model = Payment::build($data);
+        foreach ($data as $field => $value) {
+            $model->addField($field, $value);
+        }
+        return $model;
     }
 
     private function getMethod($payment)
