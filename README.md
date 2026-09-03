@@ -5,16 +5,15 @@
 Konduto is a fraud detection service that helps e-commerce merchants spot fraud with Buying Behavior.
 
 # Requirements
-- PHP **7.x.x** or higher
+- PHP **7.x** or **8.x**
 - MySQL **5.6.x** or higher
 - Active account at [Konduto](https://www.konduto.com/ "Konduto")
 
-# Instalattion
-It is possible to install the Konduto module for Magento 2 via [.zip](https://github.com/konduto/magento2/archive/master.zip), via [Git](https://github.com) ou via [Composer](https://getcomposer.org).
+# Installation
 
-#### Via [composer](https://getcomposer.org)
+#### Via [composer](https://getcomposer.org) (recommended)
 - Go to the Magento root directory and add the module:
-> `composer require konduto/magento2`
+> `composer require equifax-bvs/konduto-magento2:^1.8`
 - Update the available Magento modules
 > `bin/magento setup:upgrade`
 - The ​**Konduto_Antifraud**​ module should be displayed in the list of Magento modules
@@ -22,26 +21,13 @@ It is possible to install the Konduto module for Magento 2 via [.zip](https://gi
 
 #### Via [git](https://github.com)
 - Go to the Magento root directory and add the module
-> `git clone https://github.com/konduto/magento2.git app/code/Konduto/Antifraud/`
+> `git clone https://github.com/konduto/magento.git app/code/Konduto/Antifraud/`
+- Install the Konduto SDK:
+> `composer require konduto/sdk:v2.0.1`
 - Update the available Magento modules
 > `bin/magento setup:upgrade`
 - The ​**Konduto_Antifraud**​​ module should be displayed in the list of Magento modules
 > `bin/magento module:status`
-- Go to the Magento root directory and add the module:
-> `composer require konduto/sdk:v2.0.1`
-
-#### Via [.zip](https://github.com/konduto/magento2/archive/master.zip)
-- Create the following folder (s) inside the Magento ​app​​ folder
-> `code/Konduto/Antifraud`
-- Download [.zip](https://github.com/konduto/magento2/archive/master.zip)
-- The path should be ​**app / code / Konduto / Antifraud**
-- Extract the **​.zip**​​ files into the ​**Antifraud** folder
-- In the root directory, update the available Magento modules
-> `bin/magento setup:upgrade`
-- The **Konduto_Antifraud** module should be displayed in the list of Magento modules
-> `bin/magento module:status`
-- Go to the Magento root directory and add the module:
-> `composer require konduto/sdk:v2.0.1`
 
 # Configuration
 1. Setting up your Konduto account
@@ -55,9 +41,75 @@ It is possible to install the Konduto module for Magento 2 via [.zip](https://gi
 3. Enabling order dispatch
     - In the **Settings** tab, in the **Enable Order Dispatch?** field, you must enable this option so that the completed requests are sent to a queue, then sent to the Konduto for analysis
 
+# Fields sent to the Konduto API
+
+Payload built according to the official documentation:
+[docs.konduto.com/reference/enviar-um-pedido](https://docs.konduto.com/reference/enviar-um-pedido)
+
+### Order (root)
+
+| Field | Source (Magento) | Notes |
+|---|---|---|
+| `id` | Order increment ID | required |
+| `visitor` | `_kdt` cookie (fingerprint JS) | captured at order placement |
+| `total_amount` | Grand total | required |
+| `shipping_amount` | Shipping amount | |
+| `tax_amount` | Tax amount | sent when > 0 |
+| `currency` | Order currency code | falls back to base currency |
+| `installments` | Payment `additional_information` (`installments` / `cc_installments`) | required by the API; defaults to `1` |
+| `ip` | Order remote IP | IPv4 and IPv6 supported |
+| `purchased_at` | Order `created_at` | ISO 8601, UTC (`YYYY-MM-DDTHH:mm:ssZ`) |
+
+### Customer
+
+| Field | Registered customer | Guest |
+|---|---|---|
+| `id` | Configurable (Customer ID / TaxVat / Email) | e-mail |
+| `name` | First + last name | billing first + last name |
+| `email` | Account e-mail | order e-mail |
+| `dob` | Customer DOB (`YYYY-MM-DD`) | order DOB when available |
+| `tax_id` | Mapped CPF/CNPJ attribute or TaxVat | order TaxVat / billing VAT |
+| `phone1` | Billing telephone | billing telephone |
+| `created_at` | Account creation date | — |
+| `new` | — | `true` |
+
+### Payment (list)
+
+Sent as a **list** of payment objects, as required by the API. Card fields are sent
+for `credit` **and** `debit`. When the store payment method is not mapped in the
+module configuration, the list is omitted (it is optional in the API).
+
+| Field | Notes |
+|---|---|
+| `type` | `credit`, `debit`, `boleto`, `transfer`, `voucher` (via Payment Mapping config) |
+| `amount` | order grand total |
+| `status` | `approved` (captured) or `pending` — credit/debit only |
+| `bin` | first 6 digits, when available — credit/debit only |
+| `last4` | last 4 digits — credit/debit only |
+| `expiration_date` | `MMYYYY` (zero-padded) — credit/debit only |
+
+### Billing / Shipping (address)
+
+`name`, `address1` (street, number), `address2` (complement - neighborhood),
+`city`, `state`, `zip` (digits only), `country` (ISO 3166-2, defaults to `BR`).
+Street/number/complement/neighborhood lines are configurable in **Address Mapping**.
+
+### Shopping cart (list of items)
+
+| Field | Source |
+|---|---|
+| `sku` | item SKU |
+| `name` | item name |
+| `unit_cost` | item price (2 decimals) |
+| `quantity` | qty ordered |
+| `discount` | item discount amount, when > 0 |
+
+Only visible items are sent (children of configurable/bundle products are skipped).
+
 ## Doubts
 If you need information about the platform or API, please follow the [Konduto Help](https://ajuda.konduto.com/)
 
 ## Credits
 - [Konduto](https://github.com/konduto)
-- [All Contributors](https://github.com/konduto/magento2/graphs/contributors)
+- [All Contributors](https://github.com/konduto/magento/graphs/contributors)
+
