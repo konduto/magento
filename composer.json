@@ -1,7 +1,7 @@
 {
   "name": "equifax-bvs/konduto-magento2",
   "description": "Konduto Anti Fraud Module for Magento 2",
-  "version": "1.1.0",
+  "version": "1.8.0",
   "type": "magento2-module",
   "license": "proprietary",
   "authors": [

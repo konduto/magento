@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 (2026-09-03)
+## 1.8.0 (2026-09-03)
 
 Revisão dos campos do payload conforme a documentação oficial
 (<https://docs.konduto.com/reference/enviar-um-pedido>).
@@ -52,7 +52,7 @@ Revisão dos campos do payload conforme a documentação oficial
   e datas nulos causariam deprecation no PHP 8.1+).
 
 ### Alterado
-- `setup_version` do módulo atualizado para `1.1.0`.
+- `setup_version` do módulo atualizado para `1.8.0`.
 - Pacote renomeado de `konduto/magento2` para **`equifax-bvs/konduto-magento2`**
   (com `replace` do nome antigo para compatibilidade em upgrades via Composer).
 

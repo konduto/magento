@@ -52,7 +52,7 @@ curl -XPOST -H 'Content-Type: application/json' \
 # migração a partir do pacote antigo
 composer remove konduto/magento2
 
-composer require equifax-bvs/konduto-magento2:^1.1
+composer require equifax-bvs/konduto-magento2:^1.8
 bin/magento setup:upgrade
 bin/magento cache:flush
 ```
